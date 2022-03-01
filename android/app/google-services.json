@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "937411013985",
+    "project_id": "ticketgeneration-47bfe",
+    "storage_bucket": "ticketgeneration-47bfe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937411013985:android:2c929f87ac3c70fbb6a920",
+        "android_client_info": {
+          "package_name": "com.example.sih"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937411013985-fdf82egpjpmt4cetlskm6fngjrllde77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7RxvNHkU6pVd_OEr6P7jJCmDbJ2mvu_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "937411013985-fdf82egpjpmt4cetlskm6fngjrllde77.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
