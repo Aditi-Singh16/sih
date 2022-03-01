@@ -3,14 +3,35 @@
 A new Flutter project.
 
 ## Getting Started
+To add ur assigned part follow these steps
+**7.** Create a new branch.
 
-This project is a starting point for a Flutter application.
+```
+git checkout -b <your_branch_name>
+```
 
-A few resources to get you started if this is your first Flutter project:
+**8.** Perform your desired changes to the code base.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+<p align="center"><img width=35% src="https://media2.giphy.com/media/L1R1tvI9svkIWwpVYr/giphy.gif?cid=ecf05e47pzi2rpig0vc8pjusra8hiai1b91zgiywvbubu9vu&rid=giphy.gif"></p>
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**9.** Track your changes:heavy_check_mark: .
+
+```
+git add . 
+```
+
+**10.** Commit your changes .
+
+```
+git commit -m "Relevant message"
+```
+
+**11.** Push the committed changes in your feature branch.
+
+```
+git push -u origin <your_branch_name>
+```
+
+
+**11.** Create a PR.
+click on `compare and pull requests` then compare with master branch and create a pull request.
