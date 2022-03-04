@@ -14,7 +14,7 @@ class FirestoreData{
   }
 
   Future addOrUpdateMonument(Monument monument)async{
-    await FirebaseFirestore.instance.collection("users").doc("64yuabipz6bGugJwuNXv").set(
-      monument.toMap(),SetOptions(merge: true));
+    await FirebaseFirestore.instance.collection("monument_details").doc("64yuabipz6bGugJwuNXv").set(
+        {"Monument_1": monument.toMap()},SetOptions(merge: true)).then((value) => print("updated"));
   }
 }

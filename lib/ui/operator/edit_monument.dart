@@ -27,16 +27,20 @@ class _EditMonumentState extends State<EditMonument> {
   String newDisplayPicture = '';
   final cloudinary = CloudinaryPublic('dvpg6kmsv', 'ticketbooking', cache: false);
 
-  Future<CloudinaryResponse> uploadFileOnCloudinary({required String filePath, required CloudinaryResourceType resourceType}) async {
+  Future<String> uploadFileOnCloudinary({required String? filePath, required CloudinaryResourceType resourceType}) async {
     CloudinaryResponse response;
-    response = await cloudinary.uploadFile(
-        CloudinaryFile.fromFile(filePath, resourceType: resourceType),
+    try{
+      response = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(filePath!, resourceType: resourceType),
       );
-    return response;
+      print(response);
+      return response.secureUrl;
+    }catch(e){
+      return e.toString();
+    }
   }
 
-  Future selectFile() async {
-    CloudinaryResponse response;
+  Future selectFile(String type) async {
     var result = await FilePicker.platform.pickFiles(
         type: FileType.any,
         allowMultiple: true,
@@ -45,17 +49,17 @@ class _EditMonumentState extends State<EditMonument> {
     if (result != null) {
       for (PlatformFile file in result.files) {
         if (file.path != null) {
-          response = await uploadFileOnCloudinary(
-            filePath: file.path!,
+          String responseUrl = await uploadFileOnCloudinary(
+            filePath: file.path,
             resourceType: CloudinaryResourceType.Auto,
           );
-          if(result.files.length==1){
+          if(type=='DP'){
             setState(() {
-              newDisplayPicture = response.secureUrl;
+              newDisplayPicture = responseUrl;
             });
           }else{
             setState(() {
-              monument!.gallery.add(response.secureUrl);
+              monument!.gallery.add(responseUrl);
             });
           }
         }
@@ -92,54 +96,63 @@ class _EditMonumentState extends State<EditMonument> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          physics: ScrollPhysics(),
+          physics: const ScrollPhysics(),
           child: monument!=null?
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextField(
-                    decoration: const InputDecoration(
-                        labelText:'Change Name',
-                        border: OutlineInputBorder(),
-                        errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 5)
-                        )
+              Padding(
+                padding: const EdgeInsets.only(top:8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: width*0.4,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                            labelText:'Change Name',
+                            border: OutlineInputBorder(),
+                            errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red, width: 5)
+                            )
+                        ),
+                        controller: _monumentNameController,
+                      ),
                     ),
-                    controller: _monumentNameController,
-                  ),
-                  CircleAvatar(
-                    child: IconButton(
-                      icon: const Icon(Icons.save),
-                      onPressed: ()async{
-                        await selectFile();
-                        Monument editedMonument = Monument(
-                            desc: _controller.text,
-                            gallery: newGallery,
-                            mainPic: newDisplayPicture,
-                            monumentName:_monumentNameController.text
-                        );
-                        await firestoreData.addOrUpdateMonument(editedMonument);
-                      },
-                    ),
-                  )
-                ],
+                    CircleAvatar(
+                      child: IconButton(
+                        icon: const Icon(Icons.save),
+                        onPressed: ()async{
+                          monument!.gallery.addAll(newGallery);
+                          Monument editedMonument = Monument(
+                              desc: _controller.text,
+                              gallery: monument!.gallery,
+                              mainPic: newDisplayPicture,
+                              monumentName:_monumentNameController.text
+                          );
+                          await firestoreData.addOrUpdateMonument(editedMonument);
+                        },
+                      ),
+                    )
+                  ],
+                ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-              TextField(
-                decoration: const InputDecoration(
-                    labelText: 'Add Description',
-                    border: OutlineInputBorder(),
-                    errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red, width: 5))),
-                controller: _controller,
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.newline,
-                minLines: 1,
-                maxLines: 5,
+              SizedBox(
+                width: width*0.9,
+                child: TextField(
+                  decoration: const InputDecoration(
+                      labelText: 'Add Description',
+                      border: OutlineInputBorder(),
+                      errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 5))),
+                  controller: _controller,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  minLines: 1,
+                  maxLines: 5,
+                ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.04,),
               const Text(
@@ -185,7 +198,7 @@ class _EditMonumentState extends State<EditMonument> {
                               color: Colors.black,
                             ),
                             onPressed: (){
-                              selectFile();
+                              selectFile('DP');
                             },
                           ),
                         )
@@ -194,11 +207,24 @@ class _EditMonumentState extends State<EditMonument> {
                 )
             ),
               SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-              const Text(
-                  'Edit Gallery',
-                  style:TextStyle(
-                      fontSize: 22
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                      'Edit Gallery',
+                      style:TextStyle(
+                          fontSize: 22
+                      )
+                  ),
+                  CircleAvatar(
+                    child: IconButton(
+                      icon: const Icon(Icons.add_a_photo),
+                      onPressed: ()async{
+                        await selectFile('Gallery');
+                      },
+                    ),
                   )
+                ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.03,),
               GridView.builder(
