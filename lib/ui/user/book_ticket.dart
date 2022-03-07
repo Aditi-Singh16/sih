@@ -606,8 +606,8 @@ class _BookTicketsState extends State<BookTickets> {
                               "name": "",
                               "nationality": ""
                             };
-                            setState(() async {
-                              for (int i = 1; i <= total; i++) {
+                            setState(() {
+                              for (int i = 0; i < total; i++) {
                                 userdetail = {
                                   "age": itemsL[i].age,
                                   "gender": itemsL[i].gender,
@@ -616,10 +616,8 @@ class _BookTicketsState extends State<BookTickets> {
                                 };
                                 lst.add(userdetail);
                               }
-                              await db
-                                  .collection('tickets_booked')
-                                  .doc(uid)
-                                  .set({
+                              var ticketbooked =
+                                  db.collection('tickets_booked').doc(uid).set({
                                 "date": _date.text,
                                 "time": _time.text,
                                 "monumnet_name": monumentname,
