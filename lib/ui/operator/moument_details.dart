@@ -73,190 +73,210 @@ class _MonuState extends State<Monu> {
               ),
             ),
             backgroundColor: Colors.white,
-            body:Column(
-              children: [
-                SizedBox(
-                  height:  height*0.04,
-                ),
-                //space
-                CarouselSlider(
-                  items: [
-                    //1st Image of Slider
-                    Container(
-                      margin: EdgeInsets.only(top:height*0.001,left:height*0.001,right:height*0.001),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        image: DecorationImage(
-                          image: NetworkImage(imgList[0]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+            body:Container(
+              decoration: BoxDecoration(
+                color:const Color(0xffC8E3EF),
+
+              ),
+              child:
+                Column(
+
+                  children: [
+                    SizedBox(
+                      height:  height*0.04,
                     ),
-
-                    //2nd Image of Slider
-                    Container(
-                      margin: EdgeInsets.only(top:height*0.001,left:height*0.001,right:height*0.001),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        image: DecorationImage(
-                          image: NetworkImage(imgList[1]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-
-                    //3rd Image of Slider
-                    Container(
-                      margin: EdgeInsets.only(top:height*0.001,left:height*0.001,right:height*0.001),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        image: DecorationImage(
-                          image: NetworkImage(imgList[2]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-
-                    //4th Image of Slider
-                    Container(
-                      margin: EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        image: DecorationImage(
-                          image: NetworkImage(imgList[3]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-
-                    //5th Image of Slider
-                    Container(
-
-                      margin: EdgeInsets.only(top:height*0.001,left:height*0.001,right:height*0.001),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        image: DecorationImage(
-                          image: NetworkImage(imgList[4]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ],
-                  //Slider Container properties
-                  options: CarouselOptions(
-                    height:  height*0.32,
-                    enlargeCenterPage: true,
-                    autoPlay: true,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enableInfiniteScroll: true,
-                    autoPlayAnimationDuration: Duration(milliseconds: 800),
-
-                  ),
-                ),
-                SizedBox(
-                  height:  height*0.005,
-                ),
-                //monument name
-                Text(
-                     monument_name,
-                     textAlign: TextAlign.center,
-                     style: TextStyle(
-                         fontWeight: FontWeight.bold,fontSize: fontSize),
-                   ),
-
-                SizedBox(
-                  height:  height*0.005,
-                ),
-                 //space
-                Flexible(
-                  child: Container(
-                      alignment: Alignment.bottomCenter,
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlue[100],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(50),
-                          topRight: Radius.circular(50),
-                        ),
-                      ),
-
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height:  height*0.005,
+                    //space
+                    CarouselSlider(
+                      items: [
+                        //1st Image of Slider
+                        Container(
+                          margin: EdgeInsets.only(top:height*0.001,left:height*0.001,right:height*0.001),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            image: DecorationImage(
+                              image: NetworkImage(imgList[0]),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          Text(
-                            "Description",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
-                          ),
-                          SizedBox(
-                            height:  height*0.02,
-                          ),
-                          Container(
-                            alignment: Alignment.bottomCenter,
-                            // adding margin
-                            margin:  EdgeInsets.only(top:height*0.001,left:height*0.05,right:height*0.05),
-                            // height should be fixed for vertical scrolling
-                            height: height*0.4,
-                            // SingleChildScrollView should be
-                            // wrapped in an Expanded Widget
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Expanded(
-                                  // SingleChildScrollView contains a
-                                  // single child which is scrollable
-                                  child: SingleChildScrollView(
-                                    // for Vertical scrolling
-                                    scrollDirection: Axis.vertical,
-                                    child: Text(
-                                      monument_description,
-                                      style: TextStyle(
-                                        fontSize: fontSize,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height:  height*0.04,
-                                ),
+                        ),
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //2nd Image of Slider
+                        Container(
+                          margin: EdgeInsets.only(top:height*0.001,left:height*0.001,right:height*0.001),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            image: DecorationImage(
+                              image: NetworkImage(imgList[1]),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
 
+                        //3rd Image of Slider
+                        Container(
+                          margin: EdgeInsets.only(top:height*0.001,left:height*0.001,right:height*0.001),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            image: DecorationImage(
+                              image: NetworkImage(imgList[2]),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+
+                        //4th Image of Slider
+                        Container(
+                          margin: EdgeInsets.all(6.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            image: DecorationImage(
+                              image: NetworkImage(imgList[3]),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+
+                        //5th Image of Slider
+                        Container(
+
+                          margin: EdgeInsets.only(top:height*0.001,left:height*0.001,right:height*0.001),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            image: DecorationImage(
+                              image: NetworkImage(imgList[4]),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ],
+                      //Slider Container properties
+                      options: CarouselOptions(
+                        height:  height*0.32,
+                        enlargeCenterPage: true,
+                        autoPlay: true,
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enableInfiniteScroll: true,
+                        autoPlayAnimationDuration: Duration(milliseconds: 800),
+
+                      ),
+                    ),
+                    SizedBox(
+                      height:  height*0.005,
+                    ),
+                    //monument name
+                    Text(
+                         monument_name,
+                         textAlign: TextAlign.center,
+                         style: TextStyle(
+                             fontWeight: FontWeight.bold,fontSize: fontSize),
+                       ),
+
+                    SizedBox(
+                      height:  height*0.009,
+                    ),
+                     //space
+                    Flexible(
+                      child: Container(
+                          alignment: Alignment.bottomCenter,
+                          decoration: BoxDecoration(
+                              color:const Color(0xffb6daeb),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50),
+                            ),
+                          ),
+
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height:  height*0.007,
+                              ),
+                              Text(
+                                "Description",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
+                              ),
+                              SizedBox(
+                                height:  height*0.01,
+                              ),
+                              Container(
+
+                                alignment: Alignment.bottomCenter,
+                                // adding margin
+                                margin:  EdgeInsets.only(top:height*0.001,left:height*0.05,right:height*0.05),
+                                // height should be fixed for vertical scrolling
+                                height: height*0.4,
+                                // SingleChildScrollView should be
+                                // wrapped in an Expanded Widget
+                                child: Column(
+
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      height:height*0.04,
-                                      width:width*0.3,
-                                      child: ElevatedButton.icon(
-                                        icon: Icon(Icons.add, size: fontSize),
-                                        label: Text('Edit'),
-                                        onPressed: () => {},
+                                    Expanded(
+                                      // SingleChildScrollView contains a
+                                      // single child which is scrollable
+                                      child: SingleChildScrollView(
+                                        // for Vertical scrolling
+                                        scrollDirection: Axis.vertical,
+                                        child: Text(
+                                          monument_description,
+                                          style: TextStyle(
+
+                                            fontSize: fontSize ,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
-                                      height:height*0.04,
+                                      height:  height*0.04,
+                                    ),
 
-                                      child: ElevatedButton.icon(
-                                        icon: Icon(Icons.arrow_forward, size: fontSize),
-                                        label: Text('Ticket Checker'),
-                                        onPressed: () => {},
-                                      ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                                      children: [
+                                        RaisedButton(
+
+                                          onPressed: () {},
+                                          color: const Color(0xff00b4d8),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5)),
+                                          child: Text(
+                                            "         Edit         ",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        RaisedButton(
+
+                                          onPressed: () {},
+                                          color: const Color(0xff00b4d8),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5)),
+                                          child: Text(
+                                              "Ticket Checker",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height:  height*0.02,
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height:  height*0.02,
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
                     ),
+                  ],
                 ),
-              ],
+
             )
         )
     );
