@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class BookTickets extends StatefulWidget {
   @override
@@ -17,13 +18,14 @@ class _BookTicketsState extends State<BookTickets> {
   var amountperchild = 10;
   var total = 0;
   String monumentname = "Ajanta Caves";
+  String location = "Agra,Delhi";
   DateTime selectedDate = DateTime.now();
   TextEditingController _date = TextEditingController();
-  TextEditingController _time = TextEditingController();
   TextEditingController _adult = TextEditingController();
   TextEditingController _child = TextEditingController();
   TextEditingController _amount = TextEditingController();
   bool showaddmembers = false;
+  String time = "";
   List<ItemLists> itemsL = [];
 
   final _formkey = GlobalKey<FormState>();
@@ -148,48 +150,6 @@ class _BookTicketsState extends State<BookTickets> {
                           ),
                         ),
                         Text(_date.text, style: TextStyle(color: Colors.white)),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(15.0),
-                    padding: EdgeInsets.all(17.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.blueGrey[900],
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          offset: const Offset(
-                            0,
-                            3,
-                          ),
-                          blurRadius: 5.0,
-                          spreadRadius: 0.2,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Icon(Icons.alarm, color: Colors.white),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: DropdownButtonFormField(
-                              dropdownColor: Colors.white,
-                              isExpanded: true,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  _time.text = newValue!;
-                                });
-                              },
-                              validator: (String? newValue) =>
-                                  newValue == null ? 'Select Time' : null,
-                              hint: Text('Time',
-                                  style: TextStyle(color: Colors.white)),
-                              // value: _division.text,
-                              items: timeItems),
-                        ),
                       ],
                     ),
                   ),
@@ -616,13 +576,19 @@ class _BookTicketsState extends State<BookTickets> {
                                 };
                                 lst.add(userdetail);
                               }
+                              time = DateFormat("hh:mm:ss a")
+                                  .format(DateTime.now());
                               var ticketbooked =
                                   db.collection('tickets_booked').doc(uid).set({
                                 "date": _date.text,
-                                "time": _time.text,
+                                "time": time,
                                 "monumnet_name": monumentname,
                                 "members": lst,
                                 "total_amount": _amount.text,
+                                "location": location,
+                                "uid": uid,
+                                "image":
+                                    "https://media.istockphoto.com/photos/taj-mahal-agra-india-monument-of-love-in-blue-sky-picture-id519330110?b=1&k=20&m=519330110&s=170667a&w=0&h=T_0dK2ox148Vmr8DVAD7OslruUOAsPZLk_L-JPLQ2is=",
                               });
                             });
                           },
