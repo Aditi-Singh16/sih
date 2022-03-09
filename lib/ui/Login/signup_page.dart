@@ -140,6 +140,22 @@ class _SignUpPageState extends State<SignUpPage> {
           verificationId = verificationId;
           print(verificationId);
           print("Timeout");
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Timeout!"),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
+                        controller: _codeController,
+                      ),
+                    ],
+                  ),
+                );
+              });
         });
   }
 
