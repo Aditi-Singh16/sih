@@ -7,6 +7,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 String monument_name="";
 String uid="";
+String img="";
+String time="";
+String date="";
+String location="";
 final List<String> imgList = [
   '',
 
@@ -43,10 +47,29 @@ class _ticksState extends State<ticks> {
       }
     });
   }
+  Future fun_1 () async {
+    var collection = FirebaseFirestore.instance.collection('tickets_booked');
+    collection.doc('3y98tB3O9GYqVhDVOgkv').snapshots().listen((docSnapshot) {
+      if (docSnapshot.exists) {
+        Map<String, dynamic> data = docSnapshot.data()!;
+        setState(() {
+          img = data['image'];
+          time = data['time'];
+          date=data['date'];
+          location=data['location'];
+
+
+        });
+        // You can then retrieve the value from the Map like this:
+
+      }
+    });
+  }
   @override
   void initState() {
     super.initState();
     fun();
+    fun_1();
 
   }
 
@@ -70,118 +93,118 @@ class _ticksState extends State<ticks> {
 
               ),
               child:
-                Column(
+              Column(
 
-                  children: [
-                   SizedBox(
-                      height:  height*0.04,
-                    ),
-                    Column(
+                children: [
+                  SizedBox(
+                    height:  height*0.04,
+                  ),
+                  Column(
 
-                      children: [
-                        SizedBox(
-                          height:  height*0.04,
-                        ),
-                        //space
-                        Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                            child: Image.network(imgList[0],
-                              width:width*10,
-                              height:height*0.27,)  ),
+                    children: [
+                      SizedBox(
+                        height:  height*0.04,
+                      ),
+                      //space
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Image.network(img,
+                            width:width*10,
+                            height:height*0.27,)  ),
 
-                        SizedBox(
-                          height:  height*0.006,
-                        ),
-                        //monument name
-                        Text(
-                          monument_name,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,fontSize: fontSize),
-                        ),
-                     SizedBox(
-                          height:  height*0.01,
-                        ),
-
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-
-                        ),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        Container(
-
-                          child: Column(
-                            children: [
-
-                              Container(
+                      SizedBox(
+                        height:  height*0.006,
+                      ),
+                      //monument name
+                      Text(
+                        monument_name,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,fontSize: fontSize),
+                      ),
+                      SizedBox(
+                        height:  height*0.01,
+                      ),
 
 
-                                child: Column(
-                                  children: [
-                                    Row(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+
+                      ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                      Container(
+
+                        child: Column(
+                          children: [
+
+                            Container(
+
+
+                              child: Column(
+                                children: [
+                                  Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Time " + "|",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle( fontSize: fontSize),
-                                        ),
-                                        Text(
-                                          "Date ",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle( fontSize: fontSize),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      "Location ",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle( fontSize: fontSize),
-                                    ),
-                                     SizedBox(
-                                      height:   height*0.01,
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                                        child: RepaintBoundary(
-                                          key: globalKey,
-                                          child: QrImage(
-                                            data: uid,
-                                            size: height*0.27,
-                                          ),
-                                        ),  ),
-                                  ],
-                                ),
+                                    children: [
+                                      Text(
+                                        time+" " + "|",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle( fontSize: fontSize),
+                                      ),
+                                      Text(
+                                        date+" " ,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle( fontSize: fontSize),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    location,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle( fontSize: fontSize),
+                                  ),
+                                  SizedBox(
+                                    height:   height*0.01,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                                    child: RepaintBoundary(
+                                      key: globalKey,
+                                      child: QrImage(
+                                        data: uid,
+                                        size: height*0.27,
+                                      ),
+                                    ),  ),
+                                ],
                               ),
-                               SizedBox(
-                                height: height*0.02,
+                            ),
+                            SizedBox(
+                              height: height*0.02,
+                            ),
+                            OutlineButton(
+                              child: new Text("Cancel Ticket"),
+                              borderSide: BorderSide(
+                                color: Colors.black,
                               ),
-                              OutlineButton(
-                                child: new Text("Cancel Ticket"),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  Navigator.push(context, new MaterialPageRoute(
-                                      builder: (context) => new Monu())
-                                  );
-                                },
-                              ),
+                              onPressed: () {
+                                Navigator.push(context, new MaterialPageRoute(
+                                    builder: (context) => new Monu())
+                                );
+                              },
+                            ),
 
-                            ],
+                          ],
 
-                          ),
                         ),
+                      ),
 
-                      ],
-                    )
+                    ],
+                  )
 
-                  ],
-                ),
+                ],
+              ),
 
             )
 
