@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sih/ui/operator/moument_details.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 String monument_name="";
+String uid="";
 final List<String> imgList = [
   '',
 
@@ -23,6 +25,7 @@ class ticks extends StatefulWidget{
 }
 
 class _ticksState extends State<ticks> {
+  GlobalKey globalKey = new GlobalKey();
   Future fun () async {
     var collection = FirebaseFirestore.instance.collection('monument_details');
     collection.doc('64yuabipz6bGugJwuNXv').snapshots().listen((docSnapshot) {
@@ -30,7 +33,8 @@ class _ticksState extends State<ticks> {
         Map<String, dynamic> data = docSnapshot.data()!;
         setState(() {
           monument_name = data['monumentName'];
-          imgList[0]=data['mainPic'];
+          imgList[0]=data['tickets_booked']['3y98tB3O9GYqVhDVOgkv']['image'];
+          uid=data['tickets_booked']['3y98tB3O9GYqVhDVOgkv'];
 
 
         });
@@ -143,9 +147,13 @@ class _ticksState extends State<ticks> {
                                     ),
                                     Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 30),
-                                        child: Image.network("https://www.investopedia.com/thmb/ZG1jKEKttKbiHi0EkM8yJCJp6TU=/1148x1148/filters:no_upscale():max_bytes(150000):strip_icc()/qr-code-bc94057f452f4806af70fd34540f72ad.png",
-                                          width:width*10,
-                                          height:height*0.27,)  ),
+                                        child: RepaintBoundary(
+                                          key: globalKey,
+                                          child: QrImage(
+                                            data: uid,
+                                            size: height*0.27,
+                                          ),
+                                        ),  ),
                                   ],
                                 ),
                               ),
