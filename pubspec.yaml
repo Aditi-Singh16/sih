@@ -41,7 +41,7 @@ dev_dependencies:
   firebase_core: 1.0.3
   cloud_firestore: 1.0.3
   carousel_slider: ^4.0.0
-
+  qr_flutter: ^4.0.0
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
