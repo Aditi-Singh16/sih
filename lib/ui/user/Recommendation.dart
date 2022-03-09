@@ -12,6 +12,21 @@ class Recommendations extends StatefulWidget {
   State<Recommendations> createState() => _RecommendationsState();
 }
 
+func(listy, document, context) {
+  listy.add(InkWell(
+    onTap: () {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => DetailsPage(detail: document),
+        ),
+      );
+    },
+    child: Container(
+        height: MediaQuery.of(context).size.height / 6,
+        child: Center(child: Text(document['monumentName']))),
+  ));
+}
+
 class _RecommendationsState extends State<Recommendations> {
   double lat = 0;
   double long = 0;
@@ -27,7 +42,8 @@ class _RecommendationsState extends State<Recommendations> {
 
   List<Widget> distance(List<DocumentSnapshot> documents) {
     List<Widget> listy = [
-      Text("These are the recommended nearby place"),
+      Text("These are the recommended nearby place",
+          style: TextStyle(color: Colors.black, fontSize: 10)),
       SizedBox(
         height: 20,
       )
@@ -37,18 +53,9 @@ class _RecommendationsState extends State<Recommendations> {
       long = document['long'];
       dist = getDist(userLat, userLong, lat, long);
       if (dist <= 100000) {
-        listy.add(InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DetailsPage(detail: document),
-              ),
-            );
-          },
-          child: Container(
-              height: MediaQuery.of(context).size.height / 6,
-              child: Center(child: Text(document['monumentName']))),
-        ));
+        setState(() {
+          func(listy, document, context);
+        });
       }
     });
     return listy;
