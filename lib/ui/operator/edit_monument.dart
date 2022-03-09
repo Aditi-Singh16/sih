@@ -7,11 +7,7 @@ import 'package:sih/backend/models/monument.dart';
 
 
 class EditMonument extends StatefulWidget {
-  const EditMonument({
-    required this.monumentIndex,
-    Key? key
-  }) : super(key: key);
-  final String monumentIndex;
+  const EditMonument({Key? key}) : super(key: key);
 
   @override
   _EditMonumentState createState() => _EditMonumentState();
@@ -69,7 +65,7 @@ class _EditMonumentState extends State<EditMonument> {
   }
 
   void getMonument()async{
-    var res = await firestoreData.getMonument(widget.monumentIndex);
+    var res = await firestoreData.getMonument();
     setState(() {
       monument = res;
       _controller.text = res!.desc;

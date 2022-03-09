@@ -1,20 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sih/backend/models/monument.dart';
+import 'package:sih/backend/models/ticketChecker.dart';
 
 class FirestoreData{
 
-  Future<Monument?> getMonument (String index)async{
+  Future<Monument?> getMonument ()async{
     var result = await FirebaseFirestore.instance.collection("monument_details").doc("64yuabipz6bGugJwuNXv").get();
+    print(result.data()!['desc']);
+    print(result.id);
     return Monument(
-        desc: result.data()![index]['description'],
-        gallery: result.data()![index]['gallery'],
-        mainPic: result.data()![index]['main_pic'],
-        monumentName: result.data()![index]['name']
+      id: result.id,
+        desc: result.data()!['desc'],
+        gallery: result.data()!['gallery'],
+        mainPic: result.data()!['mainPic'],
+        monumentName: result.data()!['monumentName']
     );
   }
 
   Future addOrUpdateMonument(Monument monument)async{
     await FirebaseFirestore.instance.collection("monument_details").doc("64yuabipz6bGugJwuNXv").set(
-        {"Monument_1": monument.toMap()},SetOptions(merge: true)).then((value) => print("updated"));
+        monument.toMap(),SetOptions(merge: true)).then((value) => print("updated"));
   }
+
+  Future addTicketChecker(TicketChecker ticketChecker)async{
+    await FirebaseFirestore.instance.collection("users").add(
+      TicketChecker(
+          id: ticketChecker.id,
+          name: ticketChecker.name,
+          age: ticketChecker.age,
+          gender: ticketChecker.gender,
+          nationality: ticketChecker.nationality,
+          email: ticketChecker.email,
+          phone_no: ticketChecker.phone_no,
+        type: ticketChecker.type
+      ).toMap()
+    ).then((value) => print("added ticket checker"));
+  }
+
 }

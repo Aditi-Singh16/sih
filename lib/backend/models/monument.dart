@@ -1,10 +1,12 @@
 class Monument{
+  String? id;
   final String desc;
   final List<dynamic> gallery;
   final String mainPic;
   final String monumentName;//logged in user or channel id
 
   Monument({
+    this.id,
     required this.desc,
     required this.gallery,
     required this.mainPic,
