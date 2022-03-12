@@ -4,6 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+// import 'package:toast/toast.dart';
 
 class BookTickets extends StatefulWidget {
   @override
@@ -24,6 +26,7 @@ class _BookTicketsState extends State<BookTickets> {
   TextEditingController _adult = TextEditingController();
   TextEditingController _child = TextEditingController();
   TextEditingController _amount = TextEditingController();
+
   bool showaddmembers = false;
   String time = "";
   List<ItemLists> itemsL = [];
@@ -68,11 +71,55 @@ class _BookTicketsState extends State<BookTickets> {
       {"name": "", "age": "age", "nationality": "", "gender": ""}
     ]
   ];
+  Razorpay razorpay = Razorpay();
   @override
   void initState() {
     super.initState();
     _date.text =
         "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+
+    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlerPaymentSuccess);
+    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
+    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
+  }
+
+  void handlerPaymentSuccess() {
+    print("Pament success");
+    // Toast.show("Pament success", context);
+  }
+
+  void handlerErrorFailure() {
+    print("Pament error");
+    // Toast.show("Pament error", context);
+  }
+
+  void dispose() {
+    super.dispose();
+    razorpay.clear();
+  }
+
+  void handlerExternalWallet() {
+    print("External Wallet");
+    // Toast.show("External Wallet", context);
+  }
+
+  Future<void> openCheckout() async {
+    var options = {
+      "key": "rzp_test_Ienn2nz5hJfAS1",
+      "amount": num.parse(_amount.text) * 100,
+      "name": "Sample App",
+      "description": "Payment for the some random product",
+      "prefill": {"contact": "2323232323"},
+      "external": {
+        "wallets": ["paytm"]
+      }
+    };
+
+    try {
+      razorpay.open(options);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Widget build(BuildContext context) {
@@ -558,7 +605,8 @@ class _BookTicketsState extends State<BookTickets> {
                       ? ElevatedButton(
                           style:
                               ElevatedButton.styleFrom(primary: Colors.white),
-                          onPressed: () {
+                          onPressed: () async {
+                            await openCheckout();
                             List lst = [];
                             Map userdetail = {
                               "age": "",
@@ -598,6 +646,19 @@ class _BookTicketsState extends State<BookTickets> {
                           ),
                         )
                       : Visibility(visible: false, child: Text("Book Ticket")),
+                  showaddmembers
+                      ? ElevatedButton(
+                          style:
+                              ElevatedButton.styleFrom(primary: Colors.white),
+                          onPressed: () async {
+                            await openCheckout();
+                          },
+                          child: Text(
+                            "Pay",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        )
+                      : Visibility(visible: false, child: Text("Pay")),
                 ],
               ),
             )));
