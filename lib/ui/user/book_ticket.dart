@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+// import 'package:toast/toast.dart';
 
 class BookTickets extends StatefulWidget {
   @override
@@ -8,6 +11,7 @@ class BookTickets extends StatefulWidget {
 }
 
 class _BookTicketsState extends State<BookTickets> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore db = FirebaseFirestore.instance;
   String uid = "3y98tB3O9GYqVhDVOgkv";
   var amountperadult = 30;
@@ -20,6 +24,7 @@ class _BookTicketsState extends State<BookTickets> {
   TextEditingController _adult = TextEditingController();
   TextEditingController _child = TextEditingController();
   TextEditingController _amount = TextEditingController();
+
   bool showaddmembers = false;
   String time = "";
   List<ItemLists> itemsL = [];
@@ -64,11 +69,55 @@ class _BookTicketsState extends State<BookTickets> {
       {"name": "", "age": "age", "nationality": "", "gender": ""}
     ]
   ];
+  Razorpay razorpay = Razorpay();
   @override
   void initState() {
     super.initState();
     _date.text =
-    "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+        "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+
+    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlerPaymentSuccess);
+    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
+    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
+  }
+
+  void handlerPaymentSuccess() {
+    print("Pament success");
+    // Toast.show("Pament success", context);
+  }
+
+  void handlerErrorFailure() {
+    print("Pament error");
+    // Toast.show("Pament error", context);
+  }
+
+  void dispose() {
+    super.dispose();
+    razorpay.clear();
+  }
+
+  void handlerExternalWallet() {
+    print("External Wallet");
+    // Toast.show("External Wallet", context);
+  }
+
+  Future<void> openCheckout() async {
+    var options = {
+      "key": "rzp_test_Ienn2nz5hJfAS1",
+      "amount": num.parse(_amount.text) * 100,
+      "name": "Sample App",
+      "description": "Payment for the some random product",
+      "prefill": {"contact": "2323232323"},
+      "external": {
+        "wallets": ["paytm"]
+      }
+    };
+
+    try {
+      razorpay.open(options);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Widget build(BuildContext context) {
@@ -136,7 +185,7 @@ class _BookTicketsState extends State<BookTickets> {
                         Icon(Icons.calendar_today, color: Colors.white),
                         ElevatedButton(
                           style:
-                          ElevatedButton.styleFrom(primary: Colors.white),
+                              ElevatedButton.styleFrom(primary: Colors.white),
                           onPressed: () {
                             _selectDate(context);
                           },
@@ -174,7 +223,7 @@ class _BookTicketsState extends State<BookTickets> {
                         SizedBox(width: 25.0),
                         Text("Ajanta Caves",
                             style:
-                            TextStyle(color: Colors.white, fontSize: 15.0)),
+                                TextStyle(color: Colors.white, fontSize: 15.0)),
                       ],
                     ),
                   ),
@@ -217,7 +266,7 @@ class _BookTicketsState extends State<BookTickets> {
                               });
                             },
                             validator: (String? newValue) =>
-                            newValue == null ? 'Adult' : null,
+                                newValue == null ? 'Adult' : null,
                             hint: Text('Adult',
                                 style: TextStyle(color: Colors.white)),
                             // value: _division.text,
@@ -251,7 +300,7 @@ class _BookTicketsState extends State<BookTickets> {
                               });
                             },
                             validator: (String? newValue) =>
-                            newValue == null ? 'Child' : null,
+                                newValue == null ? 'Child' : null,
                             hint: Text('Child',
                                 style: TextStyle(color: Colors.white)),
                             // value: _division.text,
@@ -286,314 +335,328 @@ class _BookTicketsState extends State<BookTickets> {
                   ),
                   showaddmembers
                       ? Scrollbar(
-                    child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: itemsL.length,
-                        itemBuilder: (context, index) {
-                          return Dismissible(
-                            key: ObjectKey(itemsL[index]),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(width: 20),
-                                    Text(
-                                      "Member ",
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                    Text(
-                                      "${itemsL[index].id}",
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.all(15.0),
-                                      padding: EdgeInsets.all(17.0),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(10.0),
-                                        color: Colors.blueGrey[900],
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black26,
-                                            offset: const Offset(
-                                              0,
-                                              3,
-                                            ),
-                                            blurRadius: 5.0,
-                                            spreadRadius: 0.2,
-                                          ),
-                                        ],
-                                      ),
-                                      child: Column(
+                          child: ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: itemsL.length,
+                              itemBuilder: (context, index) {
+                                return Dismissible(
+                                  key: ObjectKey(itemsL[index]),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .spaceEvenly,
-                                            children: <Widget>[
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    bottom: 30.0),
-                                                width:
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                    0.3,
-                                                child: TextFormField(
-                                                  onChanged: (val) {
-                                                    setState(() =>
-                                                    itemsL[index]
-                                                        .name = val);
-                                                  },
-                                                  decoration:
-                                                  InputDecoration(
-                                                    enabledBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide:
-                                                      BorderSide(
-                                                          color: Colors
-                                                              .white),
-                                                    ),
-                                                    focusedBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide:
-                                                      BorderSide(
-                                                          width: 1,
-                                                          color: Colors
-                                                              .white),
-                                                    ),
-                                                    labelText: 'Name',
-                                                    labelStyle: TextStyle(
-                                                        color:
-                                                        Colors.white),
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    bottom: 30.0),
-                                                width:
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                    0.3,
-                                                child: TextFormField(
-                                                  onChanged: (val) {
-                                                    setState(() =>
-                                                    itemsL[index]
-                                                        .age = val);
-                                                  },
-                                                  decoration:
-                                                  InputDecoration(
-                                                    enabledBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide:
-                                                      BorderSide(
-                                                          color: Colors
-                                                              .white),
-                                                    ),
-                                                    focusedBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide:
-                                                      BorderSide(
-                                                          width: 1,
-                                                          color: Colors
-                                                              .white),
-                                                    ),
-                                                    labelText: 'Age',
-                                                    labelStyle: TextStyle(
-                                                        color:
-                                                        Colors.white),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                          SizedBox(width: 20),
+                                          Text(
+                                            "Member ",
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                            ),
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .spaceEvenly,
-                                            children: <Widget>[
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    bottom: 30.0),
-                                                width:
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                    0.3,
-                                                child: TextFormField(
-                                                  onChanged: (val) {
-                                                    setState(() => itemsL[
-                                                    index]
-                                                        .nationality =
-                                                        val = val);
-                                                  },
-                                                  decoration:
-                                                  InputDecoration(
-                                                    enabledBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide:
-                                                      BorderSide(
-                                                          color: Colors
-                                                              .white),
-                                                    ),
-                                                    focusedBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide:
-                                                      BorderSide(
-                                                          width: 1,
-                                                          color: Colors
-                                                              .white),
-                                                    ),
-                                                    labelText:
-                                                    'Nationality',
-                                                    labelStyle: TextStyle(
-                                                        color:
-                                                        Colors.white),
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    bottom: 30.0),
-                                                width:
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                    0.3,
-                                                child: TextFormField(
-                                                  onChanged: (val) {
-                                                    setState(() =>
-                                                    itemsL[index]
-                                                        .gender =
-                                                        val = val);
-                                                  },
-                                                  decoration:
-                                                  InputDecoration(
-                                                    enabledBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide:
-                                                      BorderSide(
-                                                          color: Colors
-                                                              .white),
-                                                    ),
-                                                    focusedBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide:
-                                                      BorderSide(
-                                                          width: 1,
-                                                          color: Colors
-                                                              .white),
-                                                    ),
-                                                    labelText: 'Gender',
-                                                    labelStyle: TextStyle(
-                                                        color:
-                                                        Colors.white),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                          Text(
+                                            "${itemsL[index].id}",
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                  )
+                                      Column(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.all(15.0),
+                                            padding: EdgeInsets.all(17.0),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              color: Colors.blueGrey[900],
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black26,
+                                                  offset: const Offset(
+                                                    0,
+                                                    3,
+                                                  ),
+                                                  blurRadius: 5.0,
+                                                  spreadRadius: 0.2,
+                                                ),
+                                              ],
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 30.0),
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.3,
+                                                      child: TextFormField(
+                                                        onChanged: (val) {
+                                                          setState(() =>
+                                                              itemsL[index]
+                                                                  .name = val);
+                                                        },
+                                                        decoration:
+                                                            InputDecoration(
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    width: 1,
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          labelText: 'Name',
+                                                          labelStyle: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 30.0),
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.3,
+                                                      child: TextFormField(
+                                                        onChanged: (val) {
+                                                          setState(() =>
+                                                              itemsL[index]
+                                                                  .age = val);
+                                                        },
+                                                        decoration:
+                                                            InputDecoration(
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    width: 1,
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          labelText: 'Age',
+                                                          labelStyle: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 30.0),
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.3,
+                                                      child: TextFormField(
+                                                        onChanged: (val) {
+                                                          setState(() => itemsL[
+                                                                      index]
+                                                                  .nationality =
+                                                              val = val);
+                                                        },
+                                                        decoration:
+                                                            InputDecoration(
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    width: 1,
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          labelText:
+                                                              'Nationality',
+                                                          labelStyle: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 30.0),
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.3,
+                                                      child: TextFormField(
+                                                        onChanged: (val) {
+                                                          setState(() =>
+                                                              itemsL[index]
+                                                                      .gender =
+                                                                  val = val);
+                                                        },
+                                                        decoration:
+                                                            InputDecoration(
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    width: 1,
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          labelText: 'Gender',
+                                                          labelStyle: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                        )
                       : Visibility(visible: false, child: Text("HELLO")),
                   showaddmembers
                       ? Container(
-                    margin: EdgeInsets.all(15.0),
-                    padding: EdgeInsets.all(17.0),
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.blueGrey[900],
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          offset: const Offset(
-                            0,
-                            3,
+                          margin: EdgeInsets.all(15.0),
+                          padding: EdgeInsets.all(17.0),
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Colors.blueGrey[900],
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                offset: const Offset(
+                                  0,
+                                  3,
+                                ),
+                                blurRadius: 5.0,
+                                spreadRadius: 0.2,
+                              ),
+                            ],
                           ),
-                          blurRadius: 5.0,
-                          spreadRadius: 0.2,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text("Total",
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 17.0)),
-                        Text(_amount.text,
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 17.0)),
-                      ],
-                    ),
-                  )
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text("Total",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17.0)),
+                              Text(_amount.text,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17.0)),
+                            ],
+                          ),
+                        )
                       : Visibility(visible: false, child: Text("HELLO")),
                   showaddmembers
                       ? ElevatedButton(
-                    style:
-                    ElevatedButton.styleFrom(primary: Colors.white),
-                    onPressed: () {
-                      List lst = [];
-                      Map userdetail = {
-                        "age": "",
-                        "gender": "",
-                        "name": "",
-                        "nationality": ""
-                      };
-                      setState(() {
-                        for (int i = 0; i < total; i++) {
-                          userdetail = {
-                            "age": itemsL[i].age,
-                            "gender": itemsL[i].gender,
-                            "name": itemsL[i].name,
-                            "nationality": itemsL[i].nationality,
-                          };
-                          lst.add(userdetail);
-                        }
-                        time = DateFormat("hh:mm:ss a")
-                            .format(DateTime.now());
-                        var ticketbooked =
-                        db.collection('tickets_booked').doc(uid).set({
-                          "date": _date.text,
-                          "time": time,
-                          "monumnet_name": monumentname,
-                          "members": lst,
-                          "total_amount": _amount.text,
-                          "location": location,
-                          "uid": uid,
-                          "image":
-                          "https://media.istockphoto.com/photos/taj-mahal-agra-india-monument-of-love-in-blue-sky-picture-id519330110?b=1&k=20&m=519330110&s=170667a&w=0&h=T_0dK2ox148Vmr8DVAD7OslruUOAsPZLk_L-JPLQ2is=",
-                        });
-                      });
-                    },
-                    child: Text(
-                      "Book Ticket",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  )
+                          style:
+                              ElevatedButton.styleFrom(primary: Colors.white),
+                          onPressed: () async {
+                            await openCheckout();
+                            List lst = [];
+                            Map userdetail = {
+                              "age": "",
+                              "gender": "",
+                              "name": "",
+                              "nationality": ""
+                            };
+                            setState(() {
+                              for (int i = 0; i < total; i++) {
+                                userdetail = {
+                                  "age": itemsL[i].age,
+                                  "gender": itemsL[i].gender,
+                                  "name": itemsL[i].name,
+                                  "nationality": itemsL[i].nationality,
+                                };
+                                lst.add(userdetail);
+                              }
+                              time = DateFormat("hh:mm:ss a")
+                                  .format(DateTime.now());
+                              var ticketbooked =
+                                  db.collection('tickets_booked').doc(uid).set({
+                                "date": _date.text,
+                                "time": time,
+                                "monumnet_name": monumentname,
+                                "members": lst,
+                                "total_amount": _amount.text,
+                                "location": location,
+                                "uid": uid,
+                                "image":
+                                    "https://media.istockphoto.com/photos/taj-mahal-agra-india-monument-of-love-in-blue-sky-picture-id519330110?b=1&k=20&m=519330110&s=170667a&w=0&h=T_0dK2ox148Vmr8DVAD7OslruUOAsPZLk_L-JPLQ2is=",
+                              });
+                            });
+                          },
+                          child: Text(
+                            "Book Ticket",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        )
                       : Visibility(visible: false, child: Text("Book Ticket")),
+                  showaddmembers
+                      ? ElevatedButton(
+                          style:
+                              ElevatedButton.styleFrom(primary: Colors.white),
+                          onPressed: () async {
+                            await openCheckout();
+                          },
+                          child: Text(
+                            "Pay",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        )
+                      : Visibility(visible: false, child: Text("Pay")),
                 ],
               ),
             )));
@@ -610,7 +673,7 @@ class _BookTicketsState extends State<BookTickets> {
       setState(() {
         selectedDate = selected;
         _date.text =
-        "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+            "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
       });
   }
 }

@@ -7,7 +7,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
 import 'package:sih/ui/user/ListPlaces.dart';
-import 'package:sih/ui/user/Recommendation.dart';
+import 'package:sih/ui/user/recommendation.dart';
 
 class UserHome extends StatefulWidget {
   UserHome({Key? key}) : super(key: key);
@@ -17,9 +17,10 @@ class UserHome extends StatefulWidget {
 }
 
 class _UserHomeState extends State<UserHome> {
-  final userID = "64yuabipz6bGugJwuNXv";
   late Position _currentPosition;
   String _currentAddress = "";
+
+  var name, uid;
 
   _getCurrentLocation() {
     Geolocator.getCurrentPosition(
@@ -53,20 +54,17 @@ class _UserHomeState extends State<UserHome> {
 
   getInfo() async {
     HelperFunctions _helperFunctions = HelperFunctions();
-    var uid =await _helperFunctions.readUserIdPref();
-    var name =await _helperFunctions.readUserNamePref();
-    var phone =await _helperFunctions.readUserPhonePref();
-    var type =await _helperFunctions.readUserTypePref();
+    uid = await _helperFunctions.readUserIdPref();
+    name = await _helperFunctions.readUserNamePref();
     print(uid);
     print(name);
-    print(type);
-    print(phone);
   }
 
   @override
   void initState() {
     getInfo();
     super.initState();
+    _getCurrentLocation();
   }
 
   @override
@@ -106,29 +104,21 @@ class _UserHomeState extends State<UserHome> {
                                         height:
                                             MediaQuery.of(context).size.height /
                                                 25),
-                                    Text("Hello UserName"),
+                                    Text("Hello, ${name}"),
+                                    // Text("Hello ${user!.displayName}"),
                                     SizedBox(height: 10),
-                                    InkWell(
-                                      onTap: _getCurrentLocation(),
-                                      child: Row(children: [
-                                        Icon(Icons.location_on_outlined,
-                                            color: Colors.white70),
-                                        if (_currentAddress != null)
-                                          Text(
-                                            _currentAddress,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white70,
-                                            ),
+                                    Row(children: [
+                                      Icon(Icons.location_on_outlined,
+                                          color: Colors.white70),
+                                      if (_currentAddress != null)
+                                        Text(
+                                          _currentAddress,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white70,
                                           ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10.0),
-                                          child: Icon(
-                                              CupertinoIcons.chevron_down,
-                                              color: Colors.white70),
-                                        )
-                                      ]),
-                                    )
+                                        ),
+                                    ])
                                   ],
                                 ),
                                 Container(
@@ -143,7 +133,7 @@ class _UserHomeState extends State<UserHome> {
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
                                         image: AssetImage(
-                                            'assets/images/profile.png'),
+                                            'assets/assets/profile.png'),
                                         fit: BoxFit.fill),
                                   ),
                                 ),
@@ -231,10 +221,10 @@ class _UserHomeState extends State<UserHome> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
                         ),
-                        // SizedBox(
-                        //   height: MediaQuery.of(context).size.height / 5,
-                        //   child: Recommendations(),
-                        // ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 3.5,
+                          child: Recommendations(),
+                        ),
                       ],
                     ),
                   ),

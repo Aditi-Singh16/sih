@@ -1,6 +1,7 @@
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sih/prefs/sharedPrefs.dart';
 
 
 class OperatorHome extends StatefulWidget{
@@ -11,7 +12,18 @@ class OperatorHome extends StatefulWidget{
 
 class _OperatorHomeState extends State<OperatorHome> {
 
-  
+ var uid ="";
+  getInfo() async {
+    HelperFunctions _helperFunctions = HelperFunctions();
+    uid =await _helperFunctions.readUserIdPref();
+
+  }
+
+  @override
+  void initState() {
+    getInfo();
+    super.initState();
+  }
   @override
 
   Widget build(BuildContext context){
@@ -32,7 +44,7 @@ class _OperatorHomeState extends State<OperatorHome> {
             backgroundColor: Colors.white,
             body:StreamBuilder(
               stream: FirebaseFirestore.instance.collection('monument_details')
-                  .where('operatorID',isEqualTo: "I0YIVmKZYAYUJ2rHhvIFDOelmF43").snapshots(),
+                  .where('operatorID',isEqualTo: uid).snapshots(),
               builder: (context, AsyncSnapshot snapshot){
                 if(snapshot.hasError){
                   return const Text("error");

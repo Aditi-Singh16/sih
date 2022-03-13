@@ -43,13 +43,16 @@ dependencies:
   cloudinary_public: ^0.11.0
   sqflite: ^2.0.2
   path_provider: ^2.0.9
-  carousel_slider: ^4.0.0
   carousel_pro_nullsafety: ^1.0.2
   qr_flutter: ^4.0.0
   geocoding: ^2.0.0
   geolocator: ^7.0.3
   http: ^0.13.4
   syncfusion_flutter_charts: ^19.4.55
+  razorpay_flutter: ^1.2.9
+  lottie: ^1.2.2
+  qrscan: ^0.3.2
+  permission_handler: ^8.3.0
 
 dev_dependencies:
   flutter_test:
