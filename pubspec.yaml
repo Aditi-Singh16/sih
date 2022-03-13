@@ -43,12 +43,13 @@ dependencies:
   cloudinary_public: ^0.11.0
   sqflite: ^2.0.2
   path_provider: ^2.0.9
-  charts_flutter: ^0.12.0
   carousel_slider: ^4.0.0
   carousel_pro_nullsafety: ^1.0.2
   qr_flutter: ^4.0.0
   geocoding: ^2.0.0
   geolocator: ^7.0.3
+  http: ^0.13.4
+  syncfusion_flutter_charts: ^19.4.55
 
 dev_dependencies:
   flutter_test:
