@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sih/ui/ticket_checker/home.dart';
 import 'ui/Login/signup_page.dart';
+import 'package:sih/ui/user/ticket_history.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: TicketCheckerHome(),
+      home: TicketHistory(),
       theme: ThemeData(scaffoldBackgroundColor: const Color(0xFFC8E3EF)),
     );
   }
