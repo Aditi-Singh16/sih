@@ -1,10 +1,6 @@
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/widgets.dart';
 
 
 class OperatorHome extends StatefulWidget{
@@ -15,48 +11,12 @@ class OperatorHome extends StatefulWidget{
 
 class _OperatorHomeState extends State<OperatorHome> {
 
-  String monument_name="";
-  String monument_description="";
-  final List<String> imgList = [
-    '',
-    '',
-    '',
-    '',
-    '',
-  ];
-
-
-  Future fun () async {
-
-    var collection = FirebaseFirestore.instance.collection('monument_details');
-    collection.doc(FirebaseAuth.instance.currentUser!.uid).snapshots().listen((docSnapshot) {
-      if (docSnapshot.exists) {
-        Map<String, dynamic> data = docSnapshot.data()!;
-        setState(() {
-          monument_name = data['monumentName'];
-          monument_description=data['desc'];
-          imgList[0]=data['gallery'][0];
-          imgList[1]=data['gallery'][1];
-          imgList[2]=data['gallery'][2];
-          imgList[3]=data['gallery'][3];
-          imgList[4]=data['gallery'][4];
-        });
-        // You can then retrieve the value from the Map like this:
-
-      }
-    });
-  }
+  
   @override
-  void initState() {
-    super.initState();
-    fun();
-
-  }
 
   Widget build(BuildContext context){
 
     double fontSize= MediaQuery.of(context).size.width * 0.04;
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     return MaterialApp(

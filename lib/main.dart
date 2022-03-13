@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sih/backend/local_data.dart';
 import 'package:sih/ui/operator/add_ticket_checker.dart';
 import 'package:sih/ui/operator/edit_monument.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sih/ui/operator/home.dart';
-import 'package:sih/ui/user/home.dart';
+import 'package:sih/ui/operator/show_graphs.dart';
 import 'package:sih/wrapper.dart';
 
 void main()async {
@@ -21,10 +19,10 @@ void main()async {
         appBarTheme: const AppBarTheme(
             backgroundColor:Color(0xff48CAE4)
         ),
-        textTheme: TextTheme(
-    bodyText1: TextStyle(color: Colors.black),
-    bodyText2: TextStyle(color: Colors.white, fontSize: 20),
-  ),
+        textTheme: const TextTheme(
+          bodyText1: TextStyle(color: Colors.black),
+          bodyText2: TextStyle(color: Colors.white, fontSize: 20),
+        ),
     ),
 
     initialRoute: '/',
@@ -33,7 +31,7 @@ void main()async {
       "editMonument" : (context)=>const EditMonument(),
       "addTicketChecker" : (context)=>AddTicketChecker()
     },
-    home: const Wrapper(),
+    home: Wrapper(),
   ));
 }
 

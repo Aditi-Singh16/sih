@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sih/backend/local_data.dart';
 import 'package:sih/backend/models/user.dart';
+import 'package:sih/prefs/sharedPrefs.dart';
 import 'package:sih/ui/operator/edit_monument.dart';
+import 'package:sih/ui/user/home.dart';
 
 class ProfilePage extends StatefulWidget {
   final User user;
@@ -26,21 +28,21 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final _nationController = TextEditingController();
 
-
   Future<void> addUser(String name, String nation) async {
     String uid = widget.user.uid;
-    DataBaseHelper dataBaseHelper=DataBaseHelper.instance;
+    DataBaseHelper dataBaseHelper = DataBaseHelper.instance;
     MyUser insertMyUser = MyUser(
         uid: widget.user.uid,
         name: name,
         phone: widget.user.phoneNumber!,
         nationality: _nationController.text,
-        type: dropdownvalue.toLowerCase()
-    );
+        type: dropdownvalue.toLowerCase());
     await dataBaseHelper.insertUser(insertMyUser);
-    await FirebaseFirestore.instance.collection("users").doc(uid).set(
-      insertMyUser.toMap()
-    );
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .set(insertMyUser.toMap());
+    HelperFunctions().setUserNamePref(name);
   }
 
   @override
@@ -49,35 +51,11 @@ class _ProfilePageState extends State<ProfilePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFF48CAE4),
-        toolbarHeight: 90,
-        title: Row(
-          children: [
-            SizedBox(width: 25),
-            Text(
-              "Profile Page",
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            SizedBox(width: 50),
-            Container(
-              padding: EdgeInsets.only(bottom: 13.0),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.white,
-                    width: 2.2,
-                  ),
-                ),
-              ),
-              child: Text(
-                "Sign Up",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ],
+        title: Text(
+          "Profile Page",
+          style: TextStyle(
+            fontSize: 20,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -112,10 +90,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       focusedBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 1.0)),
+                              BorderSide(color: Colors.black, width: 1.0)),
                       enabledBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 0.5)),
+                              BorderSide(color: Colors.black, width: 0.5)),
                       labelText: "Name",
                       labelStyle: TextStyle(
                         fontSize: 18,
@@ -138,10 +116,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       focusedBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 1.0)),
+                              BorderSide(color: Colors.black, width: 1.0)),
                       enabledBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 0.5)),
+                              BorderSide(color: Colors.black, width: 0.5)),
                       labelText: "${widget.user.phoneNumber}",
                       enabled: false,
                       labelStyle: TextStyle(
@@ -179,10 +157,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       focusedBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 1.0)),
+                              BorderSide(color: Colors.black, width: 1.0)),
                       enabledBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 0.5)),
+                              BorderSide(color: Colors.black, width: 0.5)),
                       labelText: "Nationality",
                       labelStyle: TextStyle(
                         fontSize: 18,
@@ -202,17 +180,25 @@ class _ProfilePageState extends State<ProfilePage> {
                       final name = _nameController.text.trim();
                       final nation = _nameController.text.trim();
                       addUser(name, nation).then((value) => {
-                        if(dropdownvalue=='Operator'){
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditMonument()))
-                        }else if(dropdownvalue=='User'){
-                          //navigate to user home
-                        }else if(dropdownvalue=='Ticket_Checker'){
-                          //navigate to ticket home
-                        }
-                      });
+                            if (dropdownvalue == 'Operator')
+                              {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditMonument()))
+                              }
+                            else if (dropdownvalue == 'User')
+                              {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserHome()))
+                              }
+                            else if (dropdownvalue == 'Ticket_Checker')
+                              {
+                                //navigate to ticket home
+                              }
+                          });
                     },
                     style: ElevatedButton.styleFrom(primary: Color(0xFF00B4D8)),
                     child: Text(

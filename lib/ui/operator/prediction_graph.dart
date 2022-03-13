@@ -1,51 +1,63 @@
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:sih/backend/apicalls.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
-class PredictionGraph extends StatelessWidget {
-  PredictionGraph(this.seriesList, {this.animate = false});
-  final List<charts.Series<dynamic, DateTime>> seriesList;
-  final bool animate;
+class PredictionGraph extends StatefulWidget {
+  const PredictionGraph({this.dayOfWeek = 0, Key? key}) : super(key: key);
+  final int dayOfWeek;
 
-  factory PredictionGraph.withSampleData() {
-    return PredictionGraph(
-      _createSampleData(),
-      // Disable animations for image tests.
-      animate: false,
-    );
+  @override
+  State<PredictionGraph> createState() => _PredictionGraphState();
+}
+
+class _PredictionGraphState extends State<PredictionGraph> {
+  List<int> Pred = [10, 20, 30, 40, 50, 60, 45, 34, 44];
+
+  @override
+  void initState() {
+    print("in initState");
+    print(widget.dayOfWeek);
+    super.initState();
   }
 
   @override
-
-
-
   Widget build(BuildContext context) {
-    return Container();
-  }
-
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
-    final data = [
-      TimeSeriesSales(DateTime(2017, 9, 19), 5),
-      TimeSeriesSales(DateTime(2017, 9, 26), 25),
-      TimeSeriesSales(DateTime(2017, 10, 3), 100),
-      TimeSeriesSales(DateTime(2017, 10, 10), 75),
-    ];
-
-    return [
-      charts.Series<TimeSeriesSales, DateTime>(
-        id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
-        data: data,
-      )
-    ];
+    return FutureBuilder<List<int>>(
+        future: GetNumberOfPeople().fetchCrowdNumber("Agra", widget.dayOfWeek),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('error');
+          } else if (snapshot.hasData) {
+            return SfCartesianChart(
+                primaryXAxis: CategoryAxis(),
+                title: ChartTitle(text: 'Crowd Prediction'),
+                legend: Legend(isVisible: true),
+                series: <LineSeries<CrowdData, String>>[
+                  LineSeries<CrowdData, String>(
+                      dataSource: <CrowdData>[
+                        CrowdData('9am', snapshot.data![0]),
+                        CrowdData('10am', snapshot.data![1]),
+                        CrowdData('11am', snapshot.data![2]),
+                        CrowdData('12pm', snapshot.data![3]),
+                        CrowdData('1pm', snapshot.data![4]),
+                        CrowdData('2pm', snapshot.data![5]),
+                        CrowdData('3pm', snapshot.data![6]),
+                        CrowdData('4pm', snapshot.data![7]),
+                        CrowdData('5pm', snapshot.data![8])
+                      ],
+                      xValueMapper: (CrowdData crowd, _) => crowd.hour,
+                      yValueMapper: (CrowdData crowd, _) =>
+                          crowd.numberOfpeople,
+                      dataLabelSettings: DataLabelSettings(isVisible: true))
+                ]);
+          }
+          return Text('loading');
+        });
   }
 }
 
-class TimeSeriesSales {
-  final DateTime time;
-  final int sales;
-
-  TimeSeriesSales(this.time, this.sales);
+class CrowdData {
+  CrowdData(this.hour, this.numberOfpeople);
+  final String hour;
+  final int numberOfpeople;
 }

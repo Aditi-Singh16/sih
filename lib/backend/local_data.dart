@@ -26,24 +26,21 @@ class DataBaseHelper {
     return await openDatabase(path, version: 1, onCreate: createTable);
   }
 
-
-
   Future createTable(Database db, int version) async {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS users(
-      uid VARCHAR(100) PRIMARY KEY,
+      uid VARCHAR(500) PRIMARY KEY,
       name TEXT NOT NULL,
       type VARCHAR(100) NOT NULL,
       phone VARCHAR(100) NOT NULL,
       nationality VARCHAR(100) NOT NULL
       )
-      '''
-    );
+      ''');
   }
 
   Future<int> insertUser(MyUser user) async {
     Database db = await instance.database;
-    createTable(db,1);
+    createTable(db, 1);
 
     print('db is: $db');
     return await db.insert(
@@ -52,12 +49,12 @@ class DataBaseHelper {
     );
   }
 
-
   Future<String> getUsersById(String id) async {
     final db = await database;
-
-    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT type FROM users WHERE uid=$id');
-    print(maps);
-    return maps[0]['type'];
+    List<Map<String, dynamic>> res = await db.query('users',
+        columns: ['uid', 'name', 'type', 'phone', 'nationality'],
+        where: 'uid = ?',
+        whereArgs: [id]);
+    return res[0]['type'];
   }
 }

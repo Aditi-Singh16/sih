@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sih/authentication/user_profile.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
-import 'package:sih/ui/operator/home.dart';
-import 'package:sih/ui/ticket_checker/home.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -39,15 +37,12 @@ class _SignUpPageState extends State<SignUpPage> {
           User? user = result.user;
 
           if (user != null) {
-            print("hoooo");
             _helperFunctions.setUserIdPref(user.uid);
             _helperFunctions.setUserPhoneNoPref(phone);
             if (dropdownvalue == 'User') {
-              print('another dropdown user');
               _helperFunctions.setUserType('user');
             }
             else if (dropdownvalue == 'Ticket_Checker') {
-              print('ticket checker');
               var result = await FirebaseFirestore.instance
                   .collection("check_type")
                   .where("type", isEqualTo: "ticket_checker")
@@ -55,18 +50,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   .get();
               if (result.docs.isNotEmpty) {
                 _helperFunctions.setUserType('ticket_checker');
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => ProfilePage(user: user)));
               }
               else {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => SignUpPage()));
               }
             }
             else if (dropdownvalue == 'Operator') {
-              print("in oprtator");
               var result = await FirebaseFirestore.instance
                   .collection("check_type")
                   .where("type", isEqualTo: "operator")
@@ -74,13 +68,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   .get();
               if (result.docs.isNotEmpty) {
                 _helperFunctions.setUserType('operator');
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => ProfilePage(user: user)));
               }
               else {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => SignUpPage()));
               }
             }
@@ -113,7 +107,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Text("Confirm"),
                       onPressed: () async {
                         final code = _codeController.text.trim();
-                        print(code);
                         AuthCredential credential =
                         PhoneAuthProvider.credential(
                             verificationId: verificationId, smsCode: code);
@@ -125,11 +118,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         if (user != null) {
                           _helperFunctions.setUserIdPref(user.uid);
-                          // print(user);
                           _helperFunctions.setUserPhoneNoPref(phone);
                           if (dropdownvalue == 'User') {
                             _helperFunctions.setUserType('user');
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ProfilePage(
@@ -145,32 +137,28 @@ class _SignUpPageState extends State<SignUpPage> {
                             if (result.docs.isNotEmpty) {
                               _helperFunctions.setUserType('ticket_checker');
                             } else {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SignUpPage()));
                             }
                           }
                           else if (dropdownvalue == 'Operator') {
-                            print("hi 1");
-                            print("phone is");
-                            print(phone);
                             var result = await FirebaseFirestore.instance
                                 .collection("check_type")
                                 .where("phone", isEqualTo: phone)
                                 .where('type',isEqualTo: 'operator')
                                 .get();
                             if (result.docs.isNotEmpty) {
-                              print("hi 2");
                               _helperFunctions.setUserType('operator');
                             } else {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SignUpPage()));
                             }
                           }
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ProfilePage(user: user)));
@@ -196,29 +184,12 @@ class _SignUpPageState extends State<SignUpPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFF48CAE4),
-        toolbarHeight: 90,
-        title: Row(
-          children: [
-            SizedBox(width: 50),
-            Container(
-              padding: EdgeInsets.only(bottom: 13.0),
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.white,
-                    width: 2.2,
-                  ),
-                ),
-              ),
-              child: Text(
+        title:Text(
                 "Sign Up",
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
-            ),
-          ],
-        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -234,7 +205,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: 13),
                 const Text(
-                  "Login",
+                  "Sign Up",
                   style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,

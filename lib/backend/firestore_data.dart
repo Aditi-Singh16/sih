@@ -13,13 +13,46 @@ class FirestoreData{
         desc: result.data()!['desc'],
         gallery: result.data()!['gallery'],
         mainPic: result.data()!['mainPic'],
-        monumentName: result.data()!['monumentName']
+        monumentName: result.data()!['monumentName'], 
+        category: result.data()!['category'], 
+        city: result.data()!['city'], 
+        end: result.data()!['end'], 
+        state: result.data()!['state'], 
+        start: result.data()!['start'], 
+        foreigner: result.data()!['foreigner'],
+         indian: {
+           "adult":result.data()!['indian']['adult'],
+            "kid":result.data()!['indian']['kid']
+         }, 
+         lat: result.data()!['lat'], 
+         long: result.data()!['long'], 
+         operatorID: result.data()!['operatorID'], 
+         rating: result.data()!['rating']
     );
   }
 
   Future addOrUpdateMonument(Monument monument)async{
-    await FirebaseFirestore.instance.collection("monument_details").doc("64yuabipz6bGugJwuNXv").set(
-        monument.toMap(),SetOptions(merge: true)).then((value) => print("updated"));
+    var docId = FirebaseFirestore.instance.collection("feedback").doc();
+    await FirebaseFirestore.instance.collection("monument_details").doc(docId.id).set(
+        {
+          'desc':monument.desc,
+          'gallery':monument.gallery,
+          'mainPic':monument.mainPic,
+          'monumentName':monument.monumentName,
+          'foreigner':monument.foreigner,
+          'category':monument.category,
+          'end':monument.end,
+          'indian':monument.indian,
+          'lat':monument.lat,
+          'long':monument.long,
+          'state':monument.state,
+          'city':monument.city,
+          'rating':monument.rating,
+          'operatorID':monument.operatorID,
+          'start':monument.start,
+          'monumentID':docId.id
+        }
+        ,SetOptions(merge: true)).then((value) => print("updated"));
   }
 
   Future addTicketChecker(TicketChecker ticketChecker)async{
