@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
+import 'package:sih/prefs/sharedPrefs.dart';
 
 String monument_name="";
 String monument_description="";
@@ -20,44 +21,32 @@ void main() async  {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(Ticketdetails());
+  runApp(Ticket_Details());
 
 }
 
-class Ticketdetails extends StatefulWidget{
+class Ticket_Details extends StatefulWidget{
 
   @override
-  State<Ticketdetails> createState() => _TicketdetailsState();
+  State<Ticket_Details> createState() => _Ticket_DetailsState();
 }
 
-class _TicketdetailsState extends State<Ticketdetails> {
-  String uid = "I0YIVmKZYAYUJ2rHhvIFDOelmF43";
-  GlobalKey globalKey = new GlobalKey();
-  Future fun () async {
-    var collection = FirebaseFirestore.instance.collection('monument_details');
-    collection.doc('64yuabipz6bGugJwuNXv').snapshots().listen((docSnapshot) {
-      if (docSnapshot.exists) {
-        Map<String, dynamic> data = docSnapshot.data()!;
-        setState(() {
-          monument_name = data['monumentName'];
-          monument_description=data['desc'];
-          imgList[0]=data['gallery'][0];
-          imgList[1]=data['gallery'][1];
-          imgList[2]=data['gallery'][2];
-          imgList[3]=data['gallery'][3];
-          imgList[4]=data['gallery'][4];
-        });
-        // You can then retrieve the value from the Map like this:
+class _Ticket_DetailsState extends State<Ticket_Details> {
+  String uid = "";
+  getInfo() async {
+    HelperFunctions _helperFunctions = HelperFunctions();
+    uid =await _helperFunctions.readUserIdPref();
 
-      }
-    });
   }
   @override
   void initState() {
+    getInfo();
     super.initState();
-    fun();
-
   }
+
+  GlobalKey globalKey = new GlobalKey();
+
+
 
   Widget build(BuildContext context){
 
@@ -78,7 +67,7 @@ class _TicketdetailsState extends State<Ticketdetails> {
             backgroundColor: Colors.white,
             body:StreamBuilder(
               stream: FirebaseFirestore.instance.collection('tickets_booked')
-                  .where('uid',isEqualTo: "I0YIVmKZYAYUJ2rHhvIFDOelmF43").snapshots(),
+                  .where('uid',isEqualTo: uid).snapshots(),
               builder: (context, AsyncSnapshot snapshot){
                 if(snapshot.hasError){
                   return const Text("error");
@@ -180,7 +169,7 @@ class _TicketdetailsState extends State<Ticketdetails> {
                                       ),
                                       onPressed: () {
                                         Navigator.push(context, new MaterialPageRoute(
-                                            builder: (context) => new Ticketdetails())
+                                            builder: (context) => new Ticket_Details())
                                         );
                                       },
                                     ),
