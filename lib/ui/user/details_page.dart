@@ -30,7 +30,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     borderRadius: BorderRadius.circular(20)),
                 child: Container(
                   margin:
-                  EdgeInsets.all(MediaQuery.of(context).size.height / 100),
+                      EdgeInsets.all(MediaQuery.of(context).size.height / 100),
                   height: MediaQuery.of(context).size.height / 3.5,
                   child: Container(
                     width: MediaQuery.of(context).size.width / 100,
@@ -81,7 +81,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           Text(widget.detail["category"],
                               style:
-                              TextStyle(color: Colors.black, fontSize: 15))
+                                  TextStyle(color: Colors.black, fontSize: 15))
                         ],
                       ),
                     ),
@@ -101,7 +101,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           Text(widget.detail["start"],
                               style:
-                              TextStyle(color: Colors.black, fontSize: 15))
+                                  TextStyle(color: Colors.black, fontSize: 15))
                         ],
                       ),
                     ),
@@ -121,7 +121,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           Text(widget.detail["end"],
                               style:
-                              TextStyle(color: Colors.black, fontSize: 15))
+                                  TextStyle(color: Colors.black, fontSize: 15))
                         ],
                       ),
                     ),
@@ -141,7 +141,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           Text(widget.detail["rating"],
                               style:
-                              TextStyle(color: Colors.black, fontSize: 15))
+                                  TextStyle(color: Colors.black, fontSize: 15))
                         ],
                       ),
                     ),
@@ -151,23 +151,32 @@ class _DetailsPageState extends State<DetailsPage> {
                 ElevatedButton(onPressed: () {}, child: Text("Book Ticket")),
               ],
             ),
-            Divider(),
+            Divider(thickness: 1),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
               child: Text(widget.detail['monumentName'],
                   style: TextStyle(color: Colors.black)),
             ),
-            Divider(),
-            Padding(
-              padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.height / 30,
-                  right: MediaQuery.of(context).size.height / 30,
-                  bottom: MediaQuery.of(context).size.height / 30),
-              child: Text(
-                widget.detail["desc"],
-                style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width / 22,
-                    color: Colors.black),
+            Container(
+              alignment: Alignment.bottomCenter,
+              decoration: BoxDecoration(
+                color: const Color(0xffb6daeb),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  topRight: Radius.circular(50),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(
+                  MediaQuery.of(context).size.height / 30,
+                ),
+                child: Text(
+                  widget.detail["desc"],
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width / 22,
+                      color: Colors.black),
+                ),
               ),
             ),
           ],

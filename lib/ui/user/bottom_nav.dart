@@ -16,7 +16,7 @@ class _UserBottomNavBarState extends State<UserBottomNavBar> {
 
   final pages = [
     UserHome(),
-    BookingHistory(),
+    TicketHistory(),
     UserAccount(),
   ];
 
