@@ -1,8 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-class HelperFunctions{
-
+class HelperFunctions {
   final idKey = 'this_user_id';
   final userNameKey = 'this_user_fName';
   final phoneNumberKey = 'this_user_phone';
@@ -63,6 +61,4 @@ class HelperFunctions{
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('this_user_type') ?? '';
   }
-
-
 }

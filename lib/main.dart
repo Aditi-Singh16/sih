@@ -8,33 +8,29 @@ import 'package:sih/ui/operator/home.dart';
 import 'package:sih/ui/user/home.dart';
 import 'package:sih/wrapper.dart';
 
-void main()async {
-
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     title: 'Flutter Demo',
     theme: ThemeData(
-        fontFamily: 'LibreBaskerville',
-        scaffoldBackgroundColor: const Color(0xFFE0EFF6),
-        bottomAppBarColor: const Color(0xff48CAE4),
-        appBarTheme: const AppBarTheme(
-            backgroundColor:Color(0xff48CAE4)
-        ),
-        textTheme: TextTheme(
-    bodyText1: TextStyle(color: Colors.black),
-    bodyText2: TextStyle(color: Colors.white, fontSize: 20),
-  ),
+      fontFamily: 'LibreBaskerville',
+      scaffoldBackgroundColor: const Color(0xFFE0EFF6),
+      bottomAppBarColor: const Color(0xff48CAE4),
+      appBarTheme: const AppBarTheme(backgroundColor: Color(0xff48CAE4)),
+      textTheme: TextTheme(
+        bodyText1: TextStyle(color: Colors.black),
+        bodyText2: TextStyle(color: Colors.white, fontSize: 20),
+      ),
     ),
-
-    initialRoute: '/',
+    initialRoute: 'UserHome',
     routes: {
-      "operatorHome" : (context)=> OperatorHome(),
-      "editMonument" : (context)=>const EditMonument(),
-      "addTicketChecker" : (context)=>AddTicketChecker()
+      "operatorHome": (context) => OperatorHome(),
+      "editMonument": (context) => const EditMonument(),
+      "addTicketChecker": (context) => AddTicketChecker(),
+      "UserHome": (context) => UserHome(),
     },
     home: const Wrapper(),
   ));
 }
-
-

@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sih/prefs/sharedPrefs.dart';
 import 'package:sih/ui/user/ListPlaces.dart';
-import 'package:sih/ui/user/Recommendation.dart';
+import 'package:sih/ui/user/recommendation.dart';
 
 class UserHome extends StatefulWidget {
   UserHome({Key? key}) : super(key: key);
@@ -15,14 +17,15 @@ class UserHome extends StatefulWidget {
 }
 
 class _UserHomeState extends State<UserHome> {
-  final userID = "64yuabipz6bGugJwuNXv";
   late Position _currentPosition;
   String _currentAddress = "";
 
+  var name, uid;
+
   _getCurrentLocation() {
     Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-        forceAndroidLocationManager: true)
+            desiredAccuracy: LocationAccuracy.best,
+            forceAndroidLocationManager: true)
         .then((Position position) {
       setState(() {
         _currentPosition = position;
@@ -49,6 +52,21 @@ class _UserHomeState extends State<UserHome> {
     }
   }
 
+  getInfo() async {
+    HelperFunctions _helperFunctions = HelperFunctions();
+    uid = await _helperFunctions.readUserIdPref();
+    name = await _helperFunctions.readUserNamePref();
+    print(uid);
+    print(name);
+  }
+
+  @override
+  void initState() {
+    getInfo();
+    super.initState();
+    _getCurrentLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
@@ -64,97 +82,88 @@ class _UserHomeState extends State<UserHome> {
             final List<DocumentSnapshot> documents = snapshot.data!.docs;
             return Scaffold(
                 body: Column(
-                  children: [
-                    Container(
-                        height: MediaQuery.of(context).size.height / 3.7,
-                        width: MediaQuery.of(context).size.width,
-                        color: Theme.of(context).bottomAppBarColor,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: MediaQuery.of(context).size.width / 16,
-                              vertical: MediaQuery.of(context).size.height / 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    height: MediaQuery.of(context).size.height / 3.7,
+                    width: MediaQuery.of(context).size.width,
+                    color: Theme.of(context).bottomAppBarColor,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width / 16,
+                          vertical: MediaQuery.of(context).size.height / 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                            height:
+                                    SizedBox(
+                                        height:
                                             MediaQuery.of(context).size.height /
                                                 25),
-                                        Text("Hello UserName"),
-                                        SizedBox(height: 10),
-                                        InkWell(
-                                          onTap:
-                                            _getCurrentLocation(),
-                                          child: Row(children: [
-                                            Icon(Icons.location_on_outlined,
-                                                color: Colors.white70),
-                                            if (_currentAddress != null)
-                                              Text(
-                                                _currentAddress,
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white70,
-                                                ),
-                                              ),
-                                            Padding(
-                                              padding: EdgeInsets.only(left: 10.0),
-                                              child: Icon(
-                                                  CupertinoIcons.chevron_down,
-                                                  color: Colors.white70),
-                                            )
-                                          ]),
-                                        )
-                                      ],
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          top: MediaQuery.of(context).size.height /
-                                              25),
-                                      width:
+                                    Text("Hello, ${name}"),
+                                    // Text("Hello ${user!.displayName}"),
+                                    SizedBox(height: 10),
+                                    Row(children: [
+                                      Icon(Icons.location_on_outlined,
+                                          color: Colors.white70),
+                                      if (_currentAddress != null)
+                                        Text(
+                                          _currentAddress,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white70,
+                                          ),
+                                        ),
+                                    ])
+                                  ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height /
+                                          25),
+                                  width:
                                       MediaQuery.of(context).size.height / 12,
-                                      height:
+                                  height:
                                       MediaQuery.of(context).size.height / 12,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/profile.png'),
-                                            fit: BoxFit.fill),
-                                      ),
-                                    ),
-                                  ]),
-                              SizedBox(height: 20),
-                            ],
-                          ),
-                        )),
-                    SizedBox(height: 10),
-                    SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Categories",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 10),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height / 3.5,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                children: documents
-                                    .map((doc) => InkWell(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/assets/profile.png'),
+                                        fit: BoxFit.fill),
+                                  ),
+                                ),
+                              ]),
+                          SizedBox(height: 20),
+                        ],
+                      ),
+                    )),
+                SizedBox(height: 10),
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Categories",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 3.5,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            children: documents
+                                .map((doc) => InkWell(
                                     onTap: () {
                                       Navigator.push(
                                         context,
@@ -170,12 +179,12 @@ class _UserHomeState extends State<UserHome> {
                                         children: [
                                           Container(
                                             width: MediaQuery.of(context)
-                                                .size
-                                                .width /
+                                                    .size
+                                                    .width /
                                                 2,
                                             height: MediaQuery.of(context)
-                                                .size
-                                                .height /
+                                                    .size
+                                                    .height /
                                                 6,
                                             decoration: BoxDecoration(
                                               shape: BoxShape.rectangle,
@@ -188,40 +197,40 @@ class _UserHomeState extends State<UserHome> {
                                           ),
                                           Container(
                                               width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
+                                                      .size
+                                                      .width /
                                                   2,
                                               color: Colors.black,
                                               child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(5.0),
+                                                    const EdgeInsets.all(5.0),
                                                 child: Text(doc['title'],
                                                     textAlign:
-                                                    TextAlign.center),
+                                                        TextAlign.center),
                                               )),
                                         ],
                                       ),
                                     )))
-                                    .toList(),
-                              ),
-                            ),
-                            Text(
-                              "Nearby Places",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            // SizedBox(
-                            //   height: MediaQuery.of(context).size.height / 5,
-                            //   child: Recommendations(),
-                            // ),
-                          ],
+                                .toList(),
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ));
+                        Text(
+                          "Nearby Places",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 3.5,
+                          child: Recommendations(),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ));
           }
           return Center(
             child: CircularProgressIndicator(
