@@ -81,156 +81,159 @@ class _UserHomeState extends State<UserHome> {
               snapshot.hasData) {
             final List<DocumentSnapshot> documents = snapshot.data!.docs;
             return Scaffold(
-                body: Column(
-              children: [
-                Container(
-                    height: MediaQuery.of(context).size.height / 3.7,
-                    width: MediaQuery.of(context).size.width,
-                    color: Theme.of(context).bottomAppBarColor,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width / 16,
-                          vertical: MediaQuery.of(context).size.height / 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                body: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                25),
-                                    Text("Hello, ${name}"),
-                                    // Text("Hello ${user!.displayName}"),
-                                    SizedBox(height: 10),
-                                    Row(children: [
-                                      Icon(Icons.location_on_outlined,
-                                          color: Colors.white70),
-                                      if (_currentAddress != null)
-                                        Text(
-                                          _currentAddress,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white70,
-                                          ),
-                                        ),
-                                    ])
-                                  ],
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      top: MediaQuery.of(context).size.height /
-                                          25),
-                                  width:
-                                      MediaQuery.of(context).size.height / 12,
-                                  height:
-                                      MediaQuery.of(context).size.height / 12,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/assets/profile.png'),
-                                        fit: BoxFit.fill),
-                                  ),
-                                ),
-                              ]),
-                          SizedBox(height: 20),
-                        ],
-                      ),
-                    )),
-                SizedBox(height: 10),
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Categories",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 10),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height / 3.5,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            children: documents
-                                .map((doc) => InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ListPlaces(
-                                              category: doc['title']),
-                                        ),
-                                      );
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                2,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                6,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.rectangle,
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    doc['image'],
-                                                  ),
-                                                  fit: BoxFit.fill),
+                  Container(
+                      height: MediaQuery.of(context).size.height / 3.7,
+                      width: MediaQuery.of(context).size.width,
+                      color: Theme.of(context).bottomAppBarColor,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: MediaQuery.of(context).size.width / 16,
+                            vertical: MediaQuery.of(context).size.height / 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                          height:
+                                              MediaQuery.of(context).size.height /
+                                                  25),
+                                      Text("Hello, ${name}"),
+                                      // Text("Hello ${user!.displayName}"),
+                                      SizedBox(height: 10),
+                                      Row(children: [
+                                        Icon(Icons.location_on_outlined,
+                                            color: Colors.white70),
+                                        if (_currentAddress != null)
+                                          Text(
+                                            _currentAddress,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white70,
                                             ),
                                           ),
-                                          Container(
+                                      ])
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        top: MediaQuery.of(context).size.height /
+                                            25),
+                                    width:
+                                        MediaQuery.of(context).size.height / 12,
+                                    height:
+                                        MediaQuery.of(context).size.height / 12,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/profile.png'),
+                                          fit: BoxFit.fill),
+                                    ),
+                                  ),
+                                ]),
+                            SizedBox(height: 20),
+                          ],
+                        ),
+                      )),
+                  SizedBox(height: 10),
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Categories",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 3.5,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              children: documents
+                                  .map((doc) => InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ListPlaces(
+                                                category: doc['title']),
+                                          ),
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          children: [
+                                            Container(
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width /
                                                   2,
-                                              color: Colors.black,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                child: Text(doc['title'],
-                                                    textAlign:
-                                                        TextAlign.center),
-                                              )),
-                                        ],
-                                      ),
-                                    )))
-                                .toList(),
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  6,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.rectangle,
+                                                image: DecorationImage(
+                                                    image: NetworkImage(
+                                                      doc['image'],
+                                                    ),
+                                                    fit: BoxFit.fill),
+                                              ),
+                                            ),
+                                            Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2,
+                                                color: Colors.black,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Text(doc['title'],
+                                                      textAlign:
+                                                          TextAlign.center),
+                                                )),
+                                          ],
+                                        ),
+                                      )))
+                                  .toList(),
+                            ),
                           ),
-                        ),
-                        Text(
-                          "Nearby Places",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height / 3.5,
-                          child: Recommendations(),
-                        ),
-                      ],
+                          Text(
+                            "Nearby Places",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 3.5,
+                            child: Recommendations(),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
-            ));
+                  )
+                              ],
+                            ),
+                ));
           }
           return Center(
             child: CircularProgressIndicator(

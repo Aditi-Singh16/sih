@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -6,19 +6,33 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 // import 'package:toast/toast.dart';
 
 class BookTickets extends StatefulWidget {
+  const BookTickets({
+    Key? key, 
+    required this.monumentName, 
+    required this.uid, 
+    required this.amountperadult, 
+    required this.amountperchild, 
+    required this.city, 
+    required this.state,
+    required this.mainPic
+    }) : super(key: key);
+
+  
   @override
   State<BookTickets> createState() => _BookTicketsState();
+  final String monumentName;
+  final String uid;
+  final int amountperadult;
+  final int amountperchild;
+  final String city;
+  final String state;
+  final String mainPic;
+
 }
 
 class _BookTicketsState extends State<BookTickets> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore db = FirebaseFirestore.instance;
-  String uid = "3y98tB3O9GYqVhDVOgkv";
-  var amountperadult = 30;
-  var amountperchild = 10;
   var total = 0;
-  String monumentname = "Ajanta Caves";
-  String location = "Agra,Delhi";
   DateTime selectedDate = DateTime.now();
   TextEditingController _date = TextEditingController();
   TextEditingController _adult = TextEditingController();
@@ -39,7 +53,6 @@ class _BookTicketsState extends State<BookTickets> {
     DropdownMenuItem(child: Text("4 PM"), value: "4 PM"),
   ];
   List<DropdownMenuItem<String>> adultItems = [
-    DropdownMenuItem(child: Text("0"), value: "0"),
     DropdownMenuItem(child: Text("1"), value: "1"),
     DropdownMenuItem(child: Text("2"), value: "2"),
     DropdownMenuItem(child: Text("3"), value: "3"),
@@ -52,7 +65,6 @@ class _BookTicketsState extends State<BookTickets> {
     DropdownMenuItem(child: Text("10"), value: "10"),
   ];
   List<DropdownMenuItem<String>> childItems = [
-    DropdownMenuItem(child: Text("0"), value: "0"),
     DropdownMenuItem(child: Text("1"), value: "1"),
     DropdownMenuItem(child: Text("2"), value: "2"),
     DropdownMenuItem(child: Text("3"), value: "3"),
@@ -133,7 +145,6 @@ class _BookTicketsState extends State<BookTickets> {
               ),
             ),
           ),
-          backgroundColor: Colors.blueGrey[900],
           elevation: 1.0,
           leading: IconButton(
             onPressed: () {},
@@ -221,7 +232,7 @@ class _BookTicketsState extends State<BookTickets> {
                         SizedBox(width: 40.0),
                         Icon(Icons.account_balance, color: Colors.white),
                         SizedBox(width: 25.0),
-                        Text("Ajanta Caves",
+                        Text(widget.monumentName,
                             style:
                                 TextStyle(color: Colors.white, fontSize: 15.0)),
                       ],
@@ -315,8 +326,8 @@ class _BookTicketsState extends State<BookTickets> {
                         showaddmembers = true;
                         total = int.parse(_adult.text) + int.parse(_child.text);
                         var totakdisplayamount =
-                            int.parse(_adult.text) * amountperadult +
-                                int.parse(_child.text) * amountperchild;
+                            int.parse(_adult.text) * widget.amountperadult +
+                                int.parse(_child.text) * widget.amountperchild;
                         _amount.text = totakdisplayamount.toString();
                         for (int i = 1; i <= total; i++) {
                           itemsL.add(ItemLists(
@@ -625,16 +636,15 @@ class _BookTicketsState extends State<BookTickets> {
                               time = DateFormat("hh:mm:ss a")
                                   .format(DateTime.now());
                               var ticketbooked =
-                                  db.collection('tickets_booked').doc(uid).set({
+                                  db.collection('tickets_booked').doc(widget.uid).set({
                                 "date": _date.text,
                                 "time": time,
-                                "monumnet_name": monumentname,
+                                "monument_name": widget.monumentName,
                                 "members": lst,
                                 "total_amount": _amount.text,
-                                "location": location,
-                                "uid": uid,
-                                "image":
-                                    "https://media.istockphoto.com/photos/taj-mahal-agra-india-monument-of-love-in-blue-sky-picture-id519330110?b=1&k=20&m=519330110&s=170667a&w=0&h=T_0dK2ox148Vmr8DVAD7OslruUOAsPZLk_L-JPLQ2is=",
+                                "location": widget.city + widget.state,
+                                "uid": widget.uid,
+                                "mainPic": widget.mainPic
                               });
                             });
                           },

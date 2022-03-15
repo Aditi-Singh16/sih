@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sih/authentication/signup.dart';
 import 'package:sih/authentication/user_profile.dart';
-import 'package:sih/ui/operator/edit_monument.dart';
-import 'package:sih/ui/user/home.dart';
+import 'package:sih/ui/operator/bottom_nav.dart';
+import 'package:sih/ui/user/bottom_nav.dart';
 
 import 'backend/local_data.dart';
 
@@ -19,12 +19,12 @@ class Wrapper extends StatefulWidget {
 class _WrapperState extends State<Wrapper> {
   String type = '';
   getType() async {
-    if(FirebaseAuth.instance.currentUser!= null){
+    if (FirebaseAuth.instance.currentUser != null) {
       var uid = FirebaseAuth.instance.currentUser!.uid;
-    String res = await DataBaseHelper.instance.getUsersById(uid);
-    setState(() {
-      type = res;
-    });
+      String res = await DataBaseHelper.instance.getUsersById(uid);
+      setState(() {
+        type = res;
+      });
     }
   }
 
@@ -47,11 +47,11 @@ class _WrapperState extends State<Wrapper> {
             return const Text('Error');
           } else if (snapshot.hasData) {
             if (type == 'user') {
-              return UserHome();
+              return UserBottomNavBar();
             } else if (type == 'ticket_checker') {
               //return tickerchecker home
             } else if (type == 'operator') {
-              return EditMonument();
+              return OperatorBottomNavBar();
             }
             return ProfilePage(user: snapshot.data!);
           } else {

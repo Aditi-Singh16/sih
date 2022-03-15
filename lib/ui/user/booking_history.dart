@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
+import 'package:sih/ui/user/ticket_details.dart';
 
 class TicketHistory extends StatefulWidget {
   @override
@@ -9,9 +10,16 @@ class TicketHistory extends StatefulWidget {
 
 class _TicketHistoryState extends State<TicketHistory> {
   var uid = '0';
+  setUID() async {
+    var id = await HelperFunctions().readUserIdPref();
+    setState(() {
+      uid = id;
+    });
+  }
+
   @override
-  void initState() async {
-    uid = await HelperFunctions().readUserIdPref();
+  void initState() {
+    setUID();
     super.initState();
   }
 
@@ -20,20 +28,9 @@ class _TicketHistoryState extends State<TicketHistory> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF48CAE4),
-        toolbarHeight: 90,
-        title: Row(
-          children: [
-            SizedBox(width: 25),
-            Text(
-              "Your Tickets",
-              style: TextStyle(fontSize: 20),
-            ),
-            // SizedBox(width: 30),
-            // Text(
-            //   "Transaction",
-            //   style: TextStyle(fontSize: 20),
-            // ),
-          ],
+        title: Text(
+          "Your Tickets",
+          style: TextStyle(fontSize: 20),
         ),
       ),
       body: Padding(
@@ -49,90 +46,94 @@ class _TicketHistoryState extends State<TicketHistory> {
                 return const Text("error");
               } else if (snapshot.hasData) {
                 final List<DocumentSnapshot> documents = snapshot.data.docs;
-                print(documents);
-                return ListView(
-                    //iterating
-                    children: documents
-                        .map(
-                          (doc) => Container(
-                            margin: EdgeInsets.only(bottom: 25),
-                            padding: EdgeInsets.all(5),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 190,
-                                  child: Column(
-                                    children: [
-                                      //details
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        doc['monument_name'],
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Center(
-                                        child: Row(
-                                          children: [
-                                            SizedBox(width: 3),
-                                            Text(
-                                              doc['time'],
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            SizedBox(width: 3),
-                                            Text(
-                                              "|",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            SizedBox(width: 4),
-                                            Text(
-                                              doc['date'],
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        doc['location'],
-                                        style: TextStyle(
-                                          color: Colors.white70,
-                                        ),
-                                      ),
-                                    ],
+                return ListView.builder(
+                  itemCount: documents.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Ticket_Details(documents: documents)));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 25),
+                        padding: EdgeInsets.all(5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              padding: EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    documents[index]['monument_name'],
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
                                   ),
-                                ),
-                                SizedBox(width: 20),
-                                Flexible(
-                                  child: Container(
-                                      width: double.infinity,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(1),
-                                        child: Center(
-                                          child: Image.network(doc['image']),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Center(
+                                    child: Row(
+                                      children: [
+                                        SizedBox(width: 3),
+                                        Text(
+                                          documents[index]['time'],
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
                                         ),
-                                      )),
-                                ),
-                              ],
+                                        SizedBox(width: 3),
+                                        Text(
+                                          "|",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          documents[index]['date'],
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    documents[index]['location'],
+                                    style: TextStyle(
+                                        color: Colors.white70, fontSize: 15),
+                                  ),
+                                ],
+                              ),
                             ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0xFF48CAE4),
+                            Flexible(
+                              child: Container(
+                                  width: double.infinity,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(1),
+                                    child: Center(
+                                      child: Image.network(
+                                          documents[index]['mainPic']),
+                                    ),
+                                  )),
                             ),
-                          ),
-                        )
-                        .toList());
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xFF48CAE4),
+                        ),
+                      ),
+                    );
+                  },
+                );
               }
               return const Text("Error");
             },

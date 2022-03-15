@@ -3,7 +3,6 @@ import 'package:sih/ui/operator/add_ticket_checker.dart';
 import 'package:sih/ui/operator/edit_monument.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sih/ui/operator/home.dart';
-import 'package:sih/ui/operator/show_graphs.dart';
 import 'package:sih/wrapper.dart';
 
 void main()async {

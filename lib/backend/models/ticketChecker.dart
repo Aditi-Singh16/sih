@@ -30,7 +30,7 @@ class TicketChecker{
       'gender':gender,
       'nationality':nationality,
       'email':email,
-      'phone_no':phone_no,
+      'phone':phone_no,
       'type':type
     };
   }
