@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
+// import 'package:qrscan/qrscan.dart' as scanner;
 
 import 'package:sih/ui/ticket_checker/successful_scan.dart';
 
 class TicketCheckerHome extends StatelessWidget {
   @override
   Future _qrScanner() async {
-    var cameraStatus = await Permission.camera.status;
-    if (cameraStatus.isGranted) {
-      String? qrdata = await scanner.scan();
-      print(qrdata);
-    } else {
-      var isGrant = await Permission.camera.request();
-      if (isGrant.isGranted) {
-        String? qrdata = await scanner.scan();
-        print(qrdata);
-      }
-    }
+    // var cameraStatus = await Permission.camera.status;
+    // if (cameraStatus.isGranted) {
+    //   String? qrdata = await scanner.scan();
+    //   print(qrdata);
+    // } else {
+    //   var isGrant = await Permission.camera.request();
+    //   if (isGrant.isGranted) {
+    //     String? qrdata = await scanner.scan();
+    //     print(qrdata);
+    //   }
+    // }
   }
 
   Widget build(BuildContext context) {

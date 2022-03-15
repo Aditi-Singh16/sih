@@ -37,14 +37,11 @@ class _OperatorHomeState extends State<OperatorHome> {
             appBar: AppBar(
               backgroundColor: const Color(0xff48CAE4),
               title: const Text('Monument detail'),
-              leading: IconButton(icon:Icon(Icons.arrow_back_rounded,color: Colors.white),
-                onPressed:() => Navigator.pop(context, false),
-              ),
             ),
             backgroundColor: Colors.white,
-            body:StreamBuilder(
-              stream: FirebaseFirestore.instance.collection('monument_details')
-                  .where('operatorID',isEqualTo: uid).snapshots(),
+            body:FutureBuilder(
+              future: FirebaseFirestore.instance.collection('monument_details')
+                  .where('operatorID',isEqualTo: uid).get(),
               builder: (context, AsyncSnapshot snapshot){
                 if(snapshot.hasError){
                   return const Text("error");

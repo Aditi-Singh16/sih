@@ -3,7 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
 
-class Ticket_Details extends StatefulWidget{
+class Ticket_Details extends StatefulWidget {
+  const Ticket_Details({
+    required this.documents,
+    Key? key
+    }) : super(key: key);
+  final List<DocumentSnapshot> documents;
 
   @override
   State<Ticket_Details> createState() => _Ticket_DetailsState();
@@ -13,9 +18,9 @@ class _Ticket_DetailsState extends State<Ticket_Details> {
   String uid = "";
   getInfo() async {
     HelperFunctions _helperFunctions = HelperFunctions();
-    uid =await _helperFunctions.readUserIdPref();
-
+    uid = await _helperFunctions.readUserIdPref();
   }
+
   @override
   void initState() {
     getInfo();
@@ -24,37 +29,25 @@ class _Ticket_DetailsState extends State<Ticket_Details> {
 
   GlobalKey globalKey = new GlobalKey();
 
-
-
-  Widget build(BuildContext context){
-
-    double fontSize= MediaQuery.of(context).size.width * 0.04;
+  Widget build(BuildContext context) {
+    double fontSize = MediaQuery.of(context).size.width * 0.04;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     return MaterialApp(
-
         home: Scaffold(
             appBar: AppBar(
               backgroundColor: const Color(0xff48CAE4),
               title: const Text('Ticket detail'),
-              leading: IconButton(icon:Icon(Icons.arrow_back_rounded,color: Colors.white),
-                onPressed:() => Navigator.pop(context, false),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back_rounded, color: Colors.white),
+                onPressed: () => Navigator.pop(context, false),
               ),
             ),
             backgroundColor: Colors.white,
-            body:StreamBuilder(
-              stream: FirebaseFirestore.instance.collection('tickets_booked')
-                  .where('uid',isEqualTo: uid).snapshots(),
-              builder: (context, AsyncSnapshot snapshot){
-                if(snapshot.hasError){
-                  return const Text("error");
-                }else if(snapshot.hasData){
-                  final specificDocument = snapshot.data.docs;
-                  return Container(
+            body: Container(
                     decoration: BoxDecoration(
-                      color:const Color(0xffC8E3EF),
-
+                      color: const Color(0xffC8E3EF),
                     ),
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height,
@@ -62,83 +55,95 @@ class _Ticket_DetailsState extends State<Ticket_Details> {
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        itemCount: specificDocument.length,
-                        itemBuilder: (context,snap){
+                        itemCount: widget.documents.length,
+                        itemBuilder: (context, snap) {
                           return Column(
                             children: [
                               SizedBox(
-                                height:  height*0.04,
+                                height: height * 0.04,
                               ),
                               //space
                               Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                                  child: Image.network( snapshot.data.docs[snap]['image'],
-                                    width:width*10,
-                                    height:height*0.27,)  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30),
+                                  child: Image.network(
+                                    widget.documents[0]['mainPic'],
+                                    width: width * 10,
+                                    height: height * 0.27,
+                                  )),
                               SizedBox(
-                                height:  height*0.006,
+                                height: height * 0.006,
                               ),
                               //monument name
                               Text(
-                                snapshot.data.docs[snap]['monument_name'],
+                                widget.documents[0]['monument_name'],
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,fontSize: fontSize),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontSize),
                               ),
                               SizedBox(
-                                height:  height*0.01,
+                                height: height * 0.01,
                               ),
                               //space
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                               ),
                               Container(
-
                                 child: Column(
                                   children: [
-
                                     Container(
-
-
                                       child: Column(
                                         children: [
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                snapshot.data.docs[snap]['time']+" " + "|",
+                                                widget.documents[0]
+                                                        ['time'] +
+                                                    " " +
+                                                    "|",
                                                 textAlign: TextAlign.center,
-                                                style: TextStyle( fontSize: fontSize),
+                                                style: TextStyle(
+                                                    fontSize: fontSize),
                                               ),
                                               Text(
-                                                snapshot.data.docs[snap]['date']+" " ,
+                                                widget.documents[0]
+                                                        ['date'] +
+                                                    " ",
                                                 textAlign: TextAlign.center,
-                                                style: TextStyle( fontSize: fontSize),
+                                                style: TextStyle(
+                                                    fontSize: fontSize),
                                               ),
                                             ],
                                           ),
                                           Text(
-                                            snapshot.data.docs[snap]['location'],
+                                            widget.documents[0]
+                                                ['location'],
                                             textAlign: TextAlign.center,
-                                            style: TextStyle( fontSize: fontSize),
+                                            style:
+                                                TextStyle(fontSize: fontSize),
                                           ),
                                           SizedBox(
-                                            height:   height*0.01,
+                                            height: height * 0.01,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 30),
                                             child: RepaintBoundary(
                                               key: globalKey,
                                               child: QrImage(
                                                 data: uid,
-                                                size: height*0.27,
+                                                size: height * 0.27,
                                               ),
-                                            ),  ),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
                                     SizedBox(
-                                      height: height*0.02,
+                                      height: height * 0.02,
                                     ),
                                     OutlineButton(
                                       child: new Text("Cancel Ticket"),
@@ -146,30 +151,19 @@ class _Ticket_DetailsState extends State<Ticket_Details> {
                                         color: Colors.black,
                                       ),
                                       onPressed: () {
-                                        Navigator.push(context, new MaterialPageRoute(
-                                            builder: (context) => new Ticket_Details())
-                                        );
+                                        
                                       },
                                     ),
-
                                   ],
-
                                 ),
                               ),
-
-
                             ],
                           );
                         },
                       ),
                     ),
-                  );
-                }else{
-                  return const Text("loading");
-                }
-              },
+                  )
             )
-        )
-    );
+            );
   }
 }

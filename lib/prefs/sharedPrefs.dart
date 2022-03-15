@@ -1,12 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-class HelperFunctions{
-
+class HelperFunctions {
   final idKey = 'this_user_id';
   final userNameKey = 'this_user_fName';
   final phoneNumberKey = 'this_user_phone';
   final userTypeKey = 'this_user_type';
+  final AvgPeople = 'this_avg_ppl';
 
   Future<void> setUserIdPref(String? id) async {
     final prefs = await SharedPreferences.getInstance();
@@ -44,6 +43,15 @@ class HelperFunctions{
     prefs.setString(userTypeKey, userType!);
   }
 
+  Future<void> setAvgPeople(String? avgcount) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (avgcount == null) {
+      prefs.setString(AvgPeople, '');
+    }
+    prefs.setString(AvgPeople, avgcount!);
+  }
+
   Future<String> readUserIdPref() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('this_user_id') ?? '0';
@@ -59,10 +67,13 @@ class HelperFunctions{
     return prefs.getString('this_user_fName') ?? '';
   }
 
+  Future<String> readAvgPeoplePref() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('this_avg_ppl') ?? '';
+  }
+
   readUserTypePref() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('this_user_type') ?? '';
   }
-
-
 }

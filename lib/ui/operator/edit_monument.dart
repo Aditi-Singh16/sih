@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:sih/backend/firestore_data.dart';
 import 'package:sih/backend/models/monument.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
+import 'package:sih/ui/operator/bottom_nav.dart';
 
 class EditMonument extends StatefulWidget {
   const EditMonument({Key? key}) : super(key: key);
@@ -437,6 +438,8 @@ class _EditMonumentState extends State<EditMonument> {
                   )
                 : Container(),
           ),
-        ));
+        ),
+      // bottomNavigationBar: OperatorBottomNavBar(),
+    );
   }
 }

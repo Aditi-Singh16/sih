@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sih/backend/local_data.dart';
 import 'package:sih/backend/models/user.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
+import 'package:sih/ui/operator/bottom_nav.dart';
 import 'package:sih/ui/operator/edit_monument.dart';
+import 'package:sih/ui/user/bottom_nav.dart';
 import 'package:sih/ui/user/home.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -29,7 +31,6 @@ class _ProfilePageState extends State<ProfilePage> {
   final _nationController = TextEditingController();
 
   Future<void> addUser(String name, String nation) async {
-    String uid = widget.user.uid;
     DataBaseHelper dataBaseHelper = DataBaseHelper.instance;
     MyUser insertMyUser = MyUser(
         uid: widget.user.uid,
@@ -40,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await dataBaseHelper.insertUser(insertMyUser);
     await FirebaseFirestore.instance
         .collection("users")
-        .doc(uid)
+        .doc(widget.user.uid)
         .set(insertMyUser.toMap());
     HelperFunctions().setUserNamePref(name);
   }
@@ -185,14 +186,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => EditMonument()))
+                                        builder: (context) =>
+                                            OperatorBottomNavBar()))
                               }
                             else if (dropdownvalue == 'User')
                               {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => UserHome()))
+                                        builder: (context) =>
+                                            UserBottomNavBar()))
                               }
                             else if (dropdownvalue == 'Ticket_Checker')
                               {

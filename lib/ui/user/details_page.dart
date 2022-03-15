@@ -1,6 +1,8 @@
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sih/prefs/sharedPrefs.dart';
+import 'package:sih/ui/user/book_ticket.dart';
 
 class DetailsPage extends StatefulWidget {
   DocumentSnapshot detail;
@@ -148,34 +150,53 @@ class _DetailsPageState extends State<DetailsPage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                ElevatedButton(onPressed: () {}, child: Text("Book Ticket")),
+                ElevatedButton(
+                    onPressed: ()async {
+                      var id = await HelperFunctions().readUserIdPref();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>BookTickets(
+                                monumentName: widget.detail['monumentName'], 
+                                uid: id,  
+                                amountperadult: widget.detail['indian']['adult'], 
+                                amountperchild: widget.detail['indian']['kid'], 
+                                city: widget.detail['city'], 
+                                state: widget.detail['state'],
+                                mainPic: widget.detail['mainPic']
+                                )
+                                )
+                                );
+                    },
+                    child: Text("Book Ticket")),
               ],
             ),
             Divider(thickness: 1),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+            Center(
               child: Text(widget.detail['monumentName'],
                   style: TextStyle(color: Colors.black)),
             ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              decoration: BoxDecoration(
-                color: const Color(0xffb6daeb),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                decoration: BoxDecoration(
+                  color: const Color(0xffb6daeb),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(
-                  MediaQuery.of(context).size.height / 30,
-                ),
-                child: Text(
-                  widget.detail["desc"],
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 22,
-                      color: Colors.black),
+                child: Padding(
+                  padding: EdgeInsets.all(
+                    MediaQuery.of(context).size.height / 30,
+                  ),
+                  child: Text(
+                    widget.detail["desc"],
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 22,
+                        color: Colors.black),
+                  ),
                 ),
               ),
             ),

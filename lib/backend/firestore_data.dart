@@ -56,7 +56,7 @@ class FirestoreData{
   }
 
   Future addTicketChecker(TicketChecker ticketChecker)async{
-    await FirebaseFirestore.instance.collection("users").add(
+    await FirebaseFirestore.instance.collection("check_type").add(
       TicketChecker(
           id: ticketChecker.id,
           name: ticketChecker.name,
@@ -68,6 +68,10 @@ class FirestoreData{
         type: ticketChecker.type
       ).toMap()
     ).then((value) => print("added ticket checker"));
+  }
+
+  Future getRevenue(String monumentID)async{
+    
   }
 
 }

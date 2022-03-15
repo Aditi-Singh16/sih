@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:sih/prefs/sharedPrefs.dart';
 
 class GetNumberOfPeople {
   var baseUrl = 'https://prediction-model-api.herokuapp.com/crowdPrediction';
@@ -20,6 +21,13 @@ class GetNumberOfPeople {
           dayOfWeek.toString()));
       res.add((double.parse(response.body)).toInt());
     }
+    HelperFunctions _helperFunctions = new HelperFunctions();
+    var sum = 0;
+    for (var e in res) {
+      sum += e;
+    }
+    var avg = sum / res.length;
+    _helperFunctions.setAvgPeople(avg.toInt().toString());
     return res;
   }
 }
