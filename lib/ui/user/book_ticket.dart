@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -6,18 +5,19 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 // import 'package:toast/toast.dart';
 
 class BookTickets extends StatefulWidget {
-  const BookTickets({
-    Key? key, 
-    required this.monumentName, 
-    required this.uid, 
-    required this.amountperadult, 
-    required this.amountperchild, 
-    required this.city, 
-    required this.state,
-    required this.mainPic
-    }) : super(key: key);
+  const BookTickets(
+      {Key? key,
+      required this.monumentName,
+      required this.uid,
+      required this.amountperadult,
+      required this.amountperchild,
+      required this.city,
+      required this.state,
+      required this.mainPic,
+      required this.operatorID
+      })
+      : super(key: key);
 
-  
   @override
   State<BookTickets> createState() => _BookTicketsState();
   final String monumentName;
@@ -27,7 +27,7 @@ class BookTickets extends StatefulWidget {
   final String city;
   final String state;
   final String mainPic;
-
+  final String operatorID;
 }
 
 class _BookTicketsState extends State<BookTickets> {
@@ -635,8 +635,10 @@ class _BookTicketsState extends State<BookTickets> {
                               }
                               time = DateFormat("hh:mm:ss a")
                                   .format(DateTime.now());
-                              var ticketbooked =
-                                  db.collection('tickets_booked').doc(widget.uid).set({
+                              var ticketbooked = db
+                                  .collection('tickets_booked')
+                                  .doc(widget.uid)
+                                  .set({
                                 "date": _date.text,
                                 "time": time,
                                 "monument_name": widget.monumentName,
@@ -644,6 +646,7 @@ class _BookTicketsState extends State<BookTickets> {
                                 "total_amount": _amount.text,
                                 "location": widget.city + widget.state,
                                 "uid": widget.uid,
+                                "operatorID": widget.operatorID,
                                 "mainPic": widget.mainPic
                               });
                             });
