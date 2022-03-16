@@ -163,7 +163,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                 amountperchild: widget.detail['indian']['kid'], 
                                 city: widget.detail['city'], 
                                 state: widget.detail['state'],
-                                mainPic: widget.detail['mainPic']
+                                mainPic: widget.detail['mainPic'],
+                                operatorID:widget.detail['operatorID']
                                 )
                                 )
                                 );

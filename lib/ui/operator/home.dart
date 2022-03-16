@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
 
-
-class OperatorHome extends StatefulWidget{
-
+class OperatorHome extends StatefulWidget {
   @override
   State<OperatorHome> createState() => _OperatorHomeState();
 }
 
 class _OperatorHomeState extends State<OperatorHome> {
-
- var uid ="";
+  var uid = "";
   getInfo() async {
     HelperFunctions _helperFunctions = HelperFunctions();
-    uid =await _helperFunctions.readUserIdPref();
-
+    uid = await _helperFunctions.readUserIdPref();
+    setState(() {
+      
+    });
   }
 
   @override
@@ -24,49 +23,56 @@ class _OperatorHomeState extends State<OperatorHome> {
     getInfo();
     super.initState();
   }
+
   @override
-
-  Widget build(BuildContext context){
-
-    double fontSize= MediaQuery.of(context).size.width * 0.04;
+  Widget build(BuildContext context) {
+    double fontSize = MediaQuery.of(context).size.width * 0.04;
     double height = MediaQuery.of(context).size.height;
 
-    return MaterialApp(
-
-        home: Scaffold(
-            appBar: AppBar(
-              backgroundColor: const Color(0xff48CAE4),
-              title: const Text('Monument detail'),
-            ),
-            backgroundColor: Colors.white,
-            body:FutureBuilder(
-              future: FirebaseFirestore.instance.collection('monument_details')
-                  .where('operatorID',isEqualTo: uid).get(),
-              builder: (context, AsyncSnapshot snapshot){
-                if(snapshot.hasError){
-                  return const Text("error");
-                }else if(snapshot.hasData){
-                  final specificDocument = snapshot.data.docs;
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: specificDocument.length,
-                      itemBuilder: (context,snap){
-                        return Column(
-                          children: [
-                            //space
-                            Container(
-                              margin: EdgeInsets.all(MediaQuery.of(context).size.height / 100),
-                              height: MediaQuery.of(context).size.height*0.5,
-                              width: MediaQuery.of(context).size.width*0.9,
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Monument detail'),
+        ),
+        body: FutureBuilder(
+          future: FirebaseFirestore.instance
+              .collection('monument_details')
+              .where('operatorID', isEqualTo: uid)
+              .get(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return const Text("error");
+            } else if (snapshot.hasData) {
+              final specificDocument = snapshot.data.docs;
+              print(specificDocument);
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: specificDocument.length,
+                itemBuilder: (context, snap) {
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height / 100),
+                        child: Card(
+                          elevation: 5,
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              side:
+                                  BorderSide(color: Colors.blueGrey.shade900),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Container(
+                            margin: EdgeInsets.all(
+                                MediaQuery.of(context).size.height / 100),
+                            height: MediaQuery.of(context).size.height / 3.5,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.9,
                               child: Carousel(
                                 boxFit: BoxFit.cover,
                                 autoplay: true,
                                 animationCurve: Curves.fastOutSlowIn,
-                                animationDuration: Duration(milliseconds: 600),
+                                animationDuration:
+                                    Duration(milliseconds: 600),
                                 dotSize: 6.0,
                                 dotIncreasedColor: Color(0xff48CAE4),
                                 dotBgColor: Colors.transparent,
@@ -76,130 +82,71 @@ class _OperatorHomeState extends State<OperatorHome> {
                                 borderRadius: true,
                                 indicatorBgPadding: 7.0,
                                 images: [
-                                  Image.network(snapshot.data.docs[snap]['gallery'][0]),
-                                  Image.network(snapshot.data.docs[snap]['gallery'][1]),
-                                  Image.network(snapshot.data.docs[snap]['gallery'][2]),
-                                  Image.network(snapshot.data.docs[snap]['gallery'][3]),
-                                  Image.network(snapshot.data.docs[snap]['gallery'][4]),
+                                  Image.network(
+                                      snapshot.data.docs[snap]['gallery'][0]),
+                                  Image.network(
+                                      snapshot.data.docs[snap]['gallery'][1]),
+                                  Image.network(
+                                      snapshot.data.docs[snap]['gallery'][2]),
+                                  Image.network(
+                                      snapshot.data.docs[snap]['gallery'][3]),
+                                  Image.network(
+                                      snapshot.data.docs[snap]['gallery'][4]),
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              height:  height*0.005,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.005,
+                      ),
+                      //monument name
+                      Text(
+                        snapshot.data.docs[snap]['monumentName'],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xff48CAE4),
+                            fontWeight: FontWeight.bold, fontSize: 25),
+                      ),
+
+                      SizedBox(
+                        height: height * 0.009,
+                      ),
+                      //space
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          alignment: Alignment.bottomCenter,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffb6daeb),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50),
                             ),
-                            //monument name
-                            Text(
-                              snapshot.data.docs[snap]['monumentName'],
-                              textAlign: TextAlign.center,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(
+                              MediaQuery.of(context).size.height / 30,
+                            ),
+                            child: Text(
+                              snapshot.data.docs[snap]["desc"],
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,fontSize: fontSize),
+                                  fontSize:
+                                      MediaQuery.of(context).size.width / 22,
+                                  color: Colors.black),
                             ),
-
-                            SizedBox(
-                              height:  height*0.009,
-                            ),
-                            //space
-                            Container(
-                              alignment: Alignment.bottomCenter,
-                              decoration: BoxDecoration(
-                                color:const Color(0xffb6daeb),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(50),
-                                  topRight: Radius.circular(50),
-                                ),
-                              ),
-
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height:  height*0.007,
-                                  ),
-                                  Text(
-                                    "Description",
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
-                                  ),
-                                  SizedBox(
-                                    height:  height*0.01,
-                                  ),
-                                  Container(
-
-                                    alignment: Alignment.bottomCenter,
-                                    // adding margin
-                                    margin:  EdgeInsets.only(top:height*0.001,left:height*0.05,right:height*0.05),
-                                    // height should be fixed for vertical scrolling
-                                    height: height*0.4,
-                                    // SingleChildScrollView should be
-                                    // wrapped in an Expanded Widget
-                                    child: Column(
-
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          // SingleChildScrollView contains a
-                                          // single child which is scrollable
-                                          child: SingleChildScrollView(
-                                            // for Vertical scrolling
-                                            scrollDirection: Axis.vertical,
-                                            child: Text(
-                                              snapshot.data.docs[snap]['desc'],
-                                              style: TextStyle(
-
-                                                fontSize: fontSize ,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height:  height*0.04,
-                                        ),
-
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                                          children: [
-                                            ElevatedButton(
-
-                                              onPressed: () {},
-                                              child: Text(
-                                                "         Edit         ",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Ticket Checker",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height:  height*0.02,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                          ),
+                        ),
+                      ),
+                    ],
                   );
-                }else{
-                  return const Text("loading");
-                }
-              },
-            )
-        )
-    );
+                },
+              );
+            } else {
+              return const Text("loading");
+            }
+          },
+        ));
   }
 }

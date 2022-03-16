@@ -35,10 +35,11 @@ class AddTicketChecker extends StatelessWidget {
           children: [
             SizedBox(height: height*0.03,),
             Text(
-                'Add ticket checker to',
+                'Add ticket checker',
               style: TextStyle(
                 fontSize: 30.0,
-                fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
+                color:  Color(0xff48CAE4)
               ),
             ),
             SizedBox(height: height*0.02,),
