@@ -7,15 +7,26 @@ import 'package:sih/ui/operator/bottom_nav.dart';
 import 'package:sih/ui/operator/prediction_graph.dart';
 
 class ShowGraph extends StatefulWidget {
-  const ShowGraph({Key? key}) : super(key: key);
+  final day;
+  ShowGraph({required this.day});
 
   @override
-  State<ShowGraph> createState() => _ShowGraphState();
+  State<ShowGraph> createState() => _ShowGraphState(day: day);
 }
 
 class _ShowGraphState extends State<ShowGraph> {
-  final List<String> _daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat','Sun'];
-  int dayNum = 0;
+  final day;
+  _ShowGraphState({required this.day});
+  final List<String> _daysOfWeek = [
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat',
+    'Sun'
+  ];
+  late int dayNum = day;
   String avg = '';
   double tot = 0.0;
   setAvg() async {
@@ -62,6 +73,8 @@ class _ShowGraphState extends State<ShowGraph> {
                           onPressed: () async {
                             setState(() {
                               dayNum = index;
+                              Navigator.pushReplacementNamed(
+                                  context, 'show_graphs');
                             });
                           },
                           style: ElevatedButton.styleFrom(
@@ -78,7 +91,7 @@ class _ShowGraphState extends State<ShowGraph> {
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: PredictionGraph(dayOfWeek: dayNum),
+              child: PredictionGraph(dayOfWeek: 2),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 10),
@@ -103,7 +116,7 @@ class _ShowGraphState extends State<ShowGraph> {
                           Text('Total Revenue ',
                               style: TextStyle(fontSize: 15)),
                           Spacer(),
-                          Text(tot.toString()+' Rs'),
+                          Text(tot.toString() + ' Rs'),
                         ],
                       ),
                     ],

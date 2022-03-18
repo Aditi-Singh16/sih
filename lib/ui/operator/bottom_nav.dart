@@ -17,7 +17,7 @@ class _OperatorBottomNavBarState extends State<OperatorBottomNavBar> {
 
   final pages = [
     OperatorHome(),
-    ShowGraph(),
+    ShowGraph(day: 0),
     AddTicketChecker(),
     UserAccount()
   ];
@@ -48,15 +48,15 @@ class _OperatorBottomNavBarState extends State<OperatorBottomNavBar> {
             },
             icon: pageIndex == 0
                 ? Icon(
-              Icons.home,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            )
+                    Icons.home,
+                    color: Colors.white,
+                    size: MediaQuery.of(context).size.height / 24,
+                  )
                 : Icon(
-              Icons.home_outlined,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            ),
+                    Icons.home_outlined,
+                    color: Colors.white,
+                    size: MediaQuery.of(context).size.height / 24,
+                  ),
           ),
           IconButton(
             enableFeedback: false,
@@ -67,15 +67,15 @@ class _OperatorBottomNavBarState extends State<OperatorBottomNavBar> {
             },
             icon: pageIndex == 1
                 ? Icon(
-              CupertinoIcons.graph_square_fill,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            )
+                    CupertinoIcons.graph_square_fill,
+                    color: Colors.white,
+                    size: MediaQuery.of(context).size.height / 24,
+                  )
                 : Icon(
-              CupertinoIcons.graph_square,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            ),
+                    CupertinoIcons.graph_square,
+                    color: Colors.white,
+                    size: MediaQuery.of(context).size.height / 24,
+                  ),
           ),
           IconButton(
             enableFeedback: false,
@@ -86,15 +86,15 @@ class _OperatorBottomNavBarState extends State<OperatorBottomNavBar> {
             },
             icon: pageIndex == 2
                 ? Icon(
-              Icons.person_add_alt_1_outlined,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            )
+                    Icons.person_add_alt_1_outlined,
+                    color: Colors.white,
+                    size: MediaQuery.of(context).size.height / 24,
+                  )
                 : Icon(
-              Icons.person_add_alt_1,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            ),
+                    Icons.person_add_alt_1,
+                    color: Colors.white,
+                    size: MediaQuery.of(context).size.height / 24,
+                  ),
           ),
           IconButton(
             enableFeedback: false,
@@ -105,15 +105,15 @@ class _OperatorBottomNavBarState extends State<OperatorBottomNavBar> {
             },
             icon: pageIndex == 3
                 ? Icon(
-              Icons.person,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            )
+                    Icons.person,
+                    color: Colors.white,
+                    size: MediaQuery.of(context).size.height / 24,
+                  )
                 : Icon(
-              Icons.person_outline,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            ),
+                    Icons.person_outline,
+                    color: Colors.white,
+                    size: MediaQuery.of(context).size.height / 24,
+                  ),
           ),
         ],
       ),
