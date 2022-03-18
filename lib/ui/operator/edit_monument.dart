@@ -142,6 +142,9 @@ class _EditMonumentState extends State<EditMonument> {
                             child: IconButton(
                               icon: const Icon(Icons.save),
                               onPressed: () async {
+                                var monId = await HelperFunctions()
+                                    .readMonumentIdPref();
+                                print("monId" + monId);
                                 monument!.gallery.addAll(newGallery);
                                 Monument editedMonument = Monument(
                                     desc: _controller.text,
@@ -163,8 +166,9 @@ class _EditMonumentState extends State<EditMonument> {
                                       "adult": _indianAdultController.text,
                                       "kid": _indianChildController.text
                                     });
-                                await firestoreData
-                                    .addOrUpdateMonument(editedMonument);
+                                await firestoreData.addOrUpdateMonument(
+                                  editedMonument,monId
+                                );
                               },
                             ),
                           )

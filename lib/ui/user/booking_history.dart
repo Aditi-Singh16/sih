@@ -50,11 +50,14 @@ class _TicketHistoryState extends State<TicketHistory> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  Ticket_Details(documents: documents)));
+                      if(documents[index]['disable']==false){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Ticket_Details(documents: documents)
+                        ));
+                      }
                     },
                     child: Container(
                       margin: EdgeInsets.only(bottom: 25),
@@ -127,7 +130,7 @@ class _TicketHistoryState extends State<TicketHistory> {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Color(0xFF48CAE4),
+                        color:  documents[index]['disable']==false?Color(0xFF48CAE4):Colors.grey[500],
                       ),
                     ),
                   );

@@ -131,9 +131,12 @@ class _ShowGraphState extends State<ShowGraph> {
                         )),
                   );
                 }
-                return SpinKitFadingCube(
-                  color: Color(0xFF48CAE4),
-                  size: 50.0,
+                return Padding(
+                  padding: const EdgeInsets.only(top:16.0),
+                  child: SpinKitFadingCube(
+                    color: Color(0xFF48CAE4),
+                    size: 50.0,
+                  ),
                 );
               },
             ),

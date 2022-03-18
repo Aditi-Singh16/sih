@@ -167,8 +167,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                 mainPic: widget.detail['mainPic'],
                                 operatorID:widget.detail['operatorID']
                                 )
-                                )
-                                );
+                              )
+                            );
                     },
                     child: Text("Book Ticket")),
               ],

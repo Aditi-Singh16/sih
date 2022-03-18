@@ -686,7 +686,8 @@ class _BookTicketsState extends State<BookTickets> {
                                 "location": widget.city + widget.state,
                                 "uid": widget.uid,
                                 "operatorID": widget.operatorID,
-                                "mainPic": widget.mainPic
+                                "mainPic": widget.mainPic,
+                                "disable":false
                               });
                             });
                           },

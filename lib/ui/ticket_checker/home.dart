@@ -84,9 +84,9 @@ class _TicketCheckerHomeState extends State<TicketCheckerHome> {
           children: [
             SizedBox(height: 20),
             Text(
-              "Monument Assigned: $monAssign",
+              "Monument Assigned:\n $monAssign",
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 color: Color(0xFF0077B6),
                 fontFamily: "Libre Baskerville",
               ),
@@ -95,7 +95,7 @@ class _TicketCheckerHomeState extends State<TicketCheckerHome> {
             Text(
               "Operator Name: $opname",
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 color: Color(0xFF0077B6),
                 fontFamily: "Libre Baskerville",
               ),

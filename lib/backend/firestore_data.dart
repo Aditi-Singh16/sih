@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sih/backend/models/monument.dart';
 import 'package:sih/backend/models/ticketChecker.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
@@ -35,12 +36,12 @@ class FirestoreData {
         rating: monDet['rating']);
   }
 
-  Future addOrUpdateMonument(Monument monument) async {
+  Future addOrUpdateMonument(Monument monument,String id) async {
     var docId = FirebaseFirestore.instance.collection("monument_details").doc();
     await FirebaseFirestore.instance
         .collection("monument_details")
-        .doc(docId.id)
-        .set({
+        .doc(id)
+        .update({
       'desc': monument.desc,
       'gallery': monument.gallery,
       'mainPic': monument.mainPic,
@@ -57,7 +58,7 @@ class FirestoreData {
       'operatorID': monument.operatorID,
       'start': monument.start,
       'monumentID': docId.id
-    }, SetOptions(merge: true)).then((value) => print("updated"));
+    }).then((value) => print("updated"));
   }
 
   Future addTicketChecker(TicketChecker ticketChecker) async {
@@ -135,5 +136,15 @@ class FirestoreData {
       print("success!");
     });
 
+  }
+
+   Future<void> signOut() async {
+    try {
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      await _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 }

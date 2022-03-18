@@ -46,7 +46,7 @@ class AddTicketChecker extends StatelessWidget {
             SizedBox(height: height*0.02,),
             Center(
               child: Container(
-                height: height*0.6,
+                height: height*0.65,
                 width: width*0.9,
                 padding: EdgeInsets.all(30),
                 decoration: BoxDecoration(

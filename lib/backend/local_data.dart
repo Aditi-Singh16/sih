@@ -57,4 +57,13 @@ class DataBaseHelper {
         whereArgs: [id]);
     return res[0]['type'];
   }
+
+  Future<void> deleteUser(int id) async {
+  final db = await database;
+  await db.delete(
+    'users',
+    where: 'id = ?',
+    whereArgs: [id],
+  );
+}
 }
