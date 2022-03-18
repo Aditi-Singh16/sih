@@ -14,8 +14,7 @@ class BookTickets extends StatefulWidget {
       required this.city,
       required this.state,
       required this.mainPic,
-      required this.operatorID
-      })
+      required this.operatorID})
       : super(key: key);
 
   @override
@@ -139,7 +138,7 @@ class _BookTicketsState extends State<BookTickets> {
             text: TextSpan(
               text: 'BOOK TICKET',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 20.0,
                 letterSpacing: 0.0,
               ),
@@ -177,7 +176,7 @@ class _BookTicketsState extends State<BookTickets> {
                     padding: EdgeInsets.all(17.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.blueGrey[900],
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
@@ -193,10 +192,10 @@ class _BookTicketsState extends State<BookTickets> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Icon(Icons.calendar_today, color: Colors.white),
+                        Icon(Icons.calendar_today, color: Colors.black),
                         ElevatedButton(
                           style:
-                              ElevatedButton.styleFrom(primary: Colors.white),
+                              ElevatedButton.styleFrom(primary: Colors.black),
                           onPressed: () {
                             _selectDate(context);
                           },
@@ -205,7 +204,7 @@ class _BookTicketsState extends State<BookTickets> {
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
-                        Text(_date.text, style: TextStyle(color: Colors.white)),
+                        Text(_date.text, style: TextStyle(color: Colors.black)),
                       ],
                     ),
                   ),
@@ -214,7 +213,7 @@ class _BookTicketsState extends State<BookTickets> {
                     padding: EdgeInsets.all(17.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.blueGrey[900],
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
@@ -230,11 +229,11 @@ class _BookTicketsState extends State<BookTickets> {
                     child: Row(
                       children: <Widget>[
                         SizedBox(width: 40.0),
-                        Icon(Icons.account_balance, color: Colors.white),
+                        Icon(Icons.account_balance, color: Colors.black),
                         SizedBox(width: 25.0),
                         Text(widget.monumentName,
                             style:
-                                TextStyle(color: Colors.white, fontSize: 15.0)),
+                                TextStyle(color: Colors.black, fontSize: 15.0)),
                       ],
                     ),
                   ),
@@ -255,7 +254,7 @@ class _BookTicketsState extends State<BookTickets> {
                         width: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.blueGrey[900],
+                          color: Colors.white,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black26,
@@ -279,7 +278,7 @@ class _BookTicketsState extends State<BookTickets> {
                             validator: (String? newValue) =>
                                 newValue == null ? 'Adult' : null,
                             hint: Text('Adult',
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.black)),
                             // value: _division.text,
                             items: adultItems),
                       ),
@@ -289,7 +288,7 @@ class _BookTicketsState extends State<BookTickets> {
                         width: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.blueGrey[900],
+                          color: Colors.white,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black26,
@@ -313,14 +312,14 @@ class _BookTicketsState extends State<BookTickets> {
                             validator: (String? newValue) =>
                                 newValue == null ? 'Child' : null,
                             hint: Text('Child',
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.black)),
                             // value: _division.text,
                             items: childItems),
                       ),
                     ],
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.white),
+                    style: ElevatedButton.styleFrom(primary: Colors.blue),
                     onPressed: () {
                       setState(() {
                         showaddmembers = true;
@@ -341,7 +340,7 @@ class _BookTicketsState extends State<BookTickets> {
                     },
                     child: Text(
                       "Add member Details",
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   showaddmembers
@@ -382,7 +381,7 @@ class _BookTicketsState extends State<BookTickets> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
-                                              color: Colors.blueGrey[900],
+                                              color: Colors.grey[600],
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: Colors.black26,
@@ -423,7 +422,7 @@ class _BookTicketsState extends State<BookTickets> {
                                                             borderSide:
                                                                 BorderSide(
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           focusedBorder:
                                                               OutlineInputBorder(
@@ -431,12 +430,12 @@ class _BookTicketsState extends State<BookTickets> {
                                                                 BorderSide(
                                                                     width: 1,
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           labelText: 'Name',
                                                           labelStyle: TextStyle(
                                                               color:
-                                                                  Colors.white),
+                                                                  Colors.black),
                                                         ),
                                                       ),
                                                     ),
@@ -461,7 +460,7 @@ class _BookTicketsState extends State<BookTickets> {
                                                             borderSide:
                                                                 BorderSide(
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           focusedBorder:
                                                               OutlineInputBorder(
@@ -469,12 +468,12 @@ class _BookTicketsState extends State<BookTickets> {
                                                                 BorderSide(
                                                                     width: 1,
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           labelText: 'Age',
                                                           labelStyle: TextStyle(
                                                               color:
-                                                                  Colors.white),
+                                                                  Colors.black),
                                                         ),
                                                       ),
                                                     ),
@@ -507,7 +506,7 @@ class _BookTicketsState extends State<BookTickets> {
                                                             borderSide:
                                                                 BorderSide(
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           focusedBorder:
                                                               OutlineInputBorder(
@@ -515,13 +514,13 @@ class _BookTicketsState extends State<BookTickets> {
                                                                 BorderSide(
                                                                     width: 1,
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           labelText:
                                                               'Nationality',
                                                           labelStyle: TextStyle(
                                                               color:
-                                                                  Colors.white),
+                                                                  Colors.black),
                                                         ),
                                                       ),
                                                     ),
@@ -547,7 +546,7 @@ class _BookTicketsState extends State<BookTickets> {
                                                             borderSide:
                                                                 BorderSide(
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           focusedBorder:
                                                               OutlineInputBorder(
@@ -555,12 +554,12 @@ class _BookTicketsState extends State<BookTickets> {
                                                                 BorderSide(
                                                                     width: 1,
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           labelText: 'Gender',
                                                           labelStyle: TextStyle(
                                                               color:
-                                                                  Colors.white),
+                                                                  Colors.black),
                                                         ),
                                                       ),
                                                     ),
@@ -584,7 +583,7 @@ class _BookTicketsState extends State<BookTickets> {
                           width: MediaQuery.of(context).size.width * 0.4,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.blueGrey[900],
+                            color: Colors.blue,
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black26,
@@ -612,8 +611,7 @@ class _BookTicketsState extends State<BookTickets> {
                       : Visibility(visible: false, child: Text("HELLO")),
                   showaddmembers
                       ? ElevatedButton(
-                          style:
-                              ElevatedButton.styleFrom(primary: Colors.white),
+                          style: ElevatedButton.styleFrom(primary: Colors.blue),
                           onPressed: () async {
                             await openCheckout();
                             List lst = [];
@@ -653,23 +651,10 @@ class _BookTicketsState extends State<BookTickets> {
                           },
                           child: Text(
                             "Book Ticket",
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.white),
                           ),
                         )
                       : Visibility(visible: false, child: Text("Book Ticket")),
-                  showaddmembers
-                      ? ElevatedButton(
-                          style:
-                              ElevatedButton.styleFrom(primary: Colors.white),
-                          onPressed: () async {
-                            await openCheckout();
-                          },
-                          child: Text(
-                            "Pay",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        )
-                      : Visibility(visible: false, child: Text("Pay")),
                 ],
               ),
             )));
