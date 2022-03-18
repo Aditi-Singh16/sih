@@ -2,9 +2,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sih/prefs/sharedPrefs.dart';
 
-class UserAccount extends StatelessWidget {
-  var uid = "evg9qeFD28NPCOd0O5jd4v0KnJv1";
+class UserAccount extends StatefulWidget {
+  UserAccount({Key? key}) : super(key: key);
+
+  @override
+  State<UserAccount> createState() => _UserAccountState();
+}
+
+class _UserAccountState extends State<UserAccount> {
+  var name, uid;
+
+  getInfo() async {
+    HelperFunctions _helperFunctions = HelperFunctions();
+    uid = await _helperFunctions.readUserIdPref();
+    name = await _helperFunctions.readUserNamePref();
+    print(uid);
+    print(name);
+  }
+
+  @override
+  void initState() {
+    getInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +63,7 @@ class UserAccount extends StatelessWidget {
               } else if (snapshot.hasData) {
                 final List<DocumentSnapshot> documents = snapshot.data.docs;
                 print('hi');
+                print(documents[0]);
                 return ListView(
                     //iterating
                     children: documents
@@ -142,40 +165,46 @@ class UserAccount extends StatelessWidget {
                                         height: 20,
                                       ),
                                       ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.white,
+                                          ),
                                           onPressed: () {},
                                           child: Text(
                                             "Logout",
                                             style: TextStyle(
-                                                color: Colors.black,
-                                                backgroundColor: Colors.white),
+                                              color: Colors.black,
+                                            ),
                                           )),
                                     ],
                                   ),
                                 ),
                                 SizedBox(height: 50),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    alignment: Alignment.bottomCenter,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xffb6daeb),
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(50),
-                                        topRight: Radius.circular(50),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      alignment: Alignment.bottomCenter,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xffb6daeb),
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(50),
+                                          topRight: Radius.circular(50),
+                                        ),
                                       ),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(
-                                        MediaQuery.of(context).size.height / 30,
-                                      ),
-                                      child: Text(
-                                        "Contact Us: admin@ticketfolio.com",
-                                        style: TextStyle(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                22,
-                                            color: Colors.black),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(
+                                          MediaQuery.of(context).size.height /
+                                              30,
+                                        ),
+                                        child: Text(
+                                          "Contact Us: admin@ticketfolio.com",
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  22,
+                                              color: Colors.black),
+                                        ),
                                       ),
                                     ),
                                   ),
