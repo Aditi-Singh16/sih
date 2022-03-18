@@ -64,14 +64,16 @@ class FirestoreData {
     await FirebaseFirestore.instance
         .collection("check_type")
         .add(TicketChecker(
-                id: ticketChecker.id,
+                monumentID: ticketChecker.monumentID,
                 name: ticketChecker.name,
                 age: ticketChecker.age,
                 gender: ticketChecker.gender,
                 nationality: ticketChecker.nationality,
                 email: ticketChecker.email,
                 phone_no: ticketChecker.phone_no,
-                type: ticketChecker.type)
+                type: ticketChecker.type,
+                monument_name: ticketChecker.monument_name,
+                operatorName: ticketChecker.operatorName)
             .toMap())
         .then((value) => print("added ticket checker"));
   }
@@ -105,6 +107,9 @@ class FirestoreData {
         print(result.data()!['monumentID']);
         _helperFunctions.setMonNamePref(result.data()!['monument_name']);
         _helperFunctions.setMonumentIdPref(result.data()!['monumentID']);
+        if (type == "ticket_checker") {
+          _helperFunctions.setoperatorNamePref(result.data()!['operator_name']);
+        }
       });
     });
   }

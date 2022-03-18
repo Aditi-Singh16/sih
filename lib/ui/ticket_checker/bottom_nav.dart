@@ -1,21 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sih/ui/ticket_checker/account.dart';
 import 'package:sih/ui/ticket_checker/home.dart';
-import 'package:sih/ui/ticket_checker/successful_scan.dart';
 
-class OperatorBottomNavBar extends StatefulWidget {
-  const OperatorBottomNavBar({Key? key}) : super(key: key);
+class TicketBottomNavBar extends StatefulWidget {
+  const TicketBottomNavBar({Key? key}) : super(key: key);
 
   @override
-  _OperatorBottomNavBarState createState() => _OperatorBottomNavBarState();
+  _TicketBottomNavBarState createState() => _TicketBottomNavBarState();
 }
 
-class _OperatorBottomNavBarState extends State<OperatorBottomNavBar> {
+class _TicketBottomNavBarState extends State<TicketBottomNavBar> {
   int pageIndex = 0;
 
   final pages = [
     TicketCheckerHome(),
-    SuccessfulScan()
+    AccountTicket()
   ];
 
   @override
@@ -62,44 +61,6 @@ class _OperatorBottomNavBarState extends State<OperatorBottomNavBar> {
               });
             },
             icon: pageIndex == 1
-                ? Icon(
-              CupertinoIcons.graph_square_fill,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            )
-                : Icon(
-              CupertinoIcons.graph_square,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            ),
-          ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 2;
-              });
-            },
-            icon: pageIndex == 2
-                ? Icon(
-              Icons.person_add_alt_1_outlined,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            )
-                : Icon(
-              Icons.person_add_alt_1,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 24,
-            ),
-          ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 3;
-              });
-            },
-            icon: pageIndex == 3
                 ? Icon(
               Icons.person,
               color: Colors.white,
