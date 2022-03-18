@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:sih/ui/user/bottom_nav.dart';
 // import 'package:toast/toast.dart';
 
 class BookTickets extends StatefulWidget {
@@ -141,7 +140,7 @@ class _BookTicketsState extends State<BookTickets> {
             text: TextSpan(
               text: 'BOOK TICKET',
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 20.0,
                 letterSpacing: 0.0,
               ),
@@ -169,6 +168,7 @@ class _BookTicketsState extends State<BookTickets> {
                     child: Text(
                       'Select Date and Time',
                       style: TextStyle(
+                        color: Colors.black,
                         fontFamily: 'salsa',
                         fontSize: 25.0,
                       ),
@@ -246,6 +246,7 @@ class _BookTicketsState extends State<BookTickets> {
                       'Select Number of adult and child',
                       style: TextStyle(
                         fontSize: 18.0,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -322,7 +323,7 @@ class _BookTicketsState extends State<BookTickets> {
                     ],
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.blue),
+                    style: ElevatedButton.styleFrom(primary: Color(0xff48CAE4)),
                     onPressed: () {
                       setState(() {
                         showaddmembers = true;
@@ -586,7 +587,7 @@ class _BookTicketsState extends State<BookTickets> {
                           width: MediaQuery.of(context).size.width * 0.4,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.blue,
+                            color: Color(0xff48CAE4),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black26,
@@ -614,7 +615,8 @@ class _BookTicketsState extends State<BookTickets> {
                       : Visibility(visible: false, child: Text("HELLO")),
                   showaddmembers
                       ? ElevatedButton(
-                          style: ElevatedButton.styleFrom(primary: Colors.blue),
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xff48CAE4)),
                           onPressed: () async {
                             await openCheckout();
                             List lst = [];
@@ -660,10 +662,7 @@ class _BookTicketsState extends State<BookTickets> {
                       : Visibility(visible: false, child: Text("Book Ticket")),
                 ],
               ),
-            )
-          ),
-        bottomNavigationBar: UserBottomNavBar()
-      );
+            )));
   }
 
   _selectDate(BuildContext context) async {
