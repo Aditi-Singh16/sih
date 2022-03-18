@@ -35,109 +35,107 @@ class _TicketHistoryState extends State<TicketHistory> {
       ),
       body: Padding(
         padding: EdgeInsets.all(25),
-        child: Center(
-          child: FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection("tickets_booked")
-                .where("uid", isEqualTo: uid)
-                .get(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.hasError) {
-                return const Text("error");
-              } else if (snapshot.hasData) {
-                final List<DocumentSnapshot> documents = snapshot.data.docs;
-                return ListView.builder(
-                  itemCount: documents.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Ticket_Details(documents: documents)));
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 25),
-                        padding: EdgeInsets.all(5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.45,
-                              padding: EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    documents[index]['monument_name'],
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
+        child: FutureBuilder(
+          future: FirebaseFirestore.instance
+              .collection("tickets_booked")
+              .where("uid", isEqualTo: uid)
+              .get(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return const Text("error");
+            } else if (snapshot.hasData) {
+              final List<DocumentSnapshot> documents = snapshot.data.docs;
+              return ListView.builder(
+                itemCount: documents.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Ticket_Details(documents: documents)));
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 25),
+                      padding: EdgeInsets.all(5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.45,
+                            padding: EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  documents[index]['monument_name'],
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Center(
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: 3),
+                                      Text(
+                                        documents[index]['time'],
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12),
+                                      ),
+                                      SizedBox(width: 3),
+                                      Text(
+                                        "|",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        documents[index]['date'],
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Center(
-                                    child: Row(
-                                      children: [
-                                        SizedBox(width: 3),
-                                        Text(
-                                          documents[index]['time'],
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12),
-                                        ),
-                                        SizedBox(width: 3),
-                                        Text(
-                                          "|",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        SizedBox(width: 4),
-                                        Text(
-                                          documents[index]['date'],
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    documents[index]['location'],
-                                    style: TextStyle(
-                                        color: Colors.white70, fontSize: 15),
-                                  ),
-                                ],
-                              ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  documents[index]['location'],
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 15),
+                                ),
+                              ],
                             ),
-                            Flexible(
-                              child: Container(
-                                  width: double.infinity,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(1),
-                                    child: Center(
-                                      child: Image.network(
-                                          documents[index]['mainPic']),
-                                    ),
-                                  )),
-                            ),
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFF48CAE4),
-                        ),
+                          ),
+                          Flexible(
+                            child: Container(
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: EdgeInsets.all(1),
+                                  child: Center(
+                                    child: Image.network(
+                                        documents[index]['mainPic']),
+                                  ),
+                                )),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                );
-              }
-              return const Text("Error");
-            },
-          ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFF48CAE4),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+            return const Text("Error");
+          },
         ),
       ),
     );

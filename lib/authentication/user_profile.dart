@@ -7,6 +7,7 @@ import 'package:sih/backend/models/user.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
 import 'package:sih/ui/operator/bottom_nav.dart';
 import 'package:sih/ui/operator/edit_monument.dart';
+import 'package:sih/ui/ticket_checker/bottom_nav.dart';
 import 'package:sih/ui/user/bottom_nav.dart';
 import 'package:sih/ui/user/home.dart';
 
@@ -205,7 +206,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               }
                             else if (dropdownvalue == 'Ticket_Checker')
                               {
-                                //navigate to ticket home
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            TicketBottomNavBar()),
+                                    (Route<dynamic> route) => false)
                               }
                           });
                     },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sih/backend/firestore_data.dart';
 import 'package:sih/backend/models/ticketChecker.dart';
+import 'package:sih/prefs/sharedPrefs.dart';
 import 'package:sih/ui/operator/bottom_nav.dart';
 
 
@@ -150,10 +151,15 @@ class AddTicketChecker extends StatelessWidget {
                       SizedBox(height: width*0.03,),
                       ElevatedButton(
                         onPressed: ()async{
+                          var ticketMonId = await HelperFunctions().readMonumentIdPref();
+                          var ticketmonName = await HelperFunctions().readMonumentNamePref();
+                          var ticketOpName = await HelperFunctions().readUserNamePref();
                           // Validate returns true if the form is valid, or false otherwise.
                           if (_formKey.currentState!.validate()) {
                             TicketChecker newTicketChecker = TicketChecker(
-                                id: "64yuabipz6bGugJwuNXv",
+                                monumentID: ticketMonId,
+                                monument_name: ticketmonName,
+                                operatorName: ticketOpName,
                                 type:"ticket_checker",
                                 name: _name.text,
                                 age: _age.text,
