@@ -1,20 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:sih/prefs/sharedPrefs.dart';
 
-import 'package:sih/ui/ticket_checker/successful_scan.dart';
+class TicketCheckerHome extends StatefulWidget {
+  @override
+  State<TicketCheckerHome> createState() => _TicketCheckerHomeState();
+}
 
-class TicketCheckerHome extends StatelessWidget {
+class _TicketCheckerHomeState extends State<TicketCheckerHome> {
+  var name = '';
+
+  setInf() async {
+    HelperFunctions _helperFunctions = HelperFunctions();
+    String resname = await _helperFunctions.readUserNamePref();
+    setState(() {
+      name=resname;
+    });
+  }
+
+  @override
+  void initState() {
+    setInf();
+    super.initState();
+  }
+
   @override
   Future _qrScanner() async {
     var cameraStatus = await Permission.camera.status;
     if (cameraStatus.isGranted) {
       String? qrdata = await scanner.scan();
+      print("qrdata isss");
       print(qrdata);
     } else {
       var isGrant = await Permission.camera.request();
       if (isGrant.isGranted) {
         String? qrdata = await scanner.scan();
+        print("qrdata isss");
         print(qrdata);
       }
     }
@@ -24,20 +46,9 @@ class TicketCheckerHome extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF48CAE4),
-        toolbarHeight: 90,
-        title: Row(
-          children: [
-            SizedBox(width: 25),
-            Text(
-              "ProfilePic",
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(width: 30),
-            Text(
-              "Welcome Zen!",
-              style: TextStyle(fontSize: 20),
-            ),
-          ],
+        title: Text(
+          "Welcome "+name+"!",
+          style: TextStyle(fontSize: 20),
         ),
       ),
       body: Padding(

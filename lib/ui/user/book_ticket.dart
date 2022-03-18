@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:sih/ui/user/bottom_nav.dart';
 // import 'package:toast/toast.dart';
 
 class BookTickets extends StatefulWidget {
@@ -672,7 +673,10 @@ class _BookTicketsState extends State<BookTickets> {
                       : Visibility(visible: false, child: Text("Pay")),
                 ],
               ),
-            )));
+            )
+          ),
+        bottomNavigationBar: UserBottomNavBar()
+      );
   }
 
   _selectDate(BuildContext context) async {

@@ -10,7 +10,6 @@ void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
     title: 'Flutter Demo',
     theme: ThemeData(
         fontFamily: 'LibreBaskerville',

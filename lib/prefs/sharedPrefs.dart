@@ -7,6 +7,7 @@ class HelperFunctions {
   final userTypeKey = 'this_user_type';
   final monumentIdKey = 'this_mon_id';
   final monumentNameKey = 'this_monName_key';
+  final operatorNameKey = 'this_opName_key';
 
   Future<void> setUserIdPref(String? id) async {
     final prefs = await SharedPreferences.getInstance();
@@ -15,6 +16,15 @@ class HelperFunctions {
       prefs.setString(idKey, '0');
     }
     prefs.setString(idKey, id!);
+  }
+
+  Future<void> setoperatorNamePref(String? opName) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (opName == null) {
+      prefs.setString(operatorNameKey, '0');
+    }
+    prefs.setString(operatorNameKey, opName!);
   }
 
   Future<void> setUserNamePref(String? userName) async {
@@ -80,6 +90,11 @@ class HelperFunctions {
   Future<String> readUserNamePref() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('this_user_fName') ?? '';
+  }
+
+  Future<String> readOpNamePref() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('this_opName_key') ?? '';
   }
 
   Future<String> readMonumentNamePref() async {
