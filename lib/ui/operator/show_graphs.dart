@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:sih/backend/apicalls.dart';
 import 'package:sih/backend/firestore_data.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
-import 'package:sih/ui/operator/bottom_nav.dart';
-import 'package:sih/ui/operator/prediction_graph.dart';
 
 class ShowGraph extends StatefulWidget {
   const ShowGraph({Key? key}) : super(key: key);
@@ -14,12 +14,19 @@ class ShowGraph extends StatefulWidget {
 }
 
 class _ShowGraphState extends State<ShowGraph> {
-  final List<String> _daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat','Sun'];
+  final List<String> _daysOfWeek = [
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat',
+    'Sun'
+  ];
   int dayNum = 0;
   String avg = '';
   double tot = 0.0;
   setAvg() async {
-    avg = await HelperFunctions().readAvgPeoplePref();
     double res = await FirestoreData()
         .getRevenue(await HelperFunctions().readUserIdPref());
     setState(() {
@@ -76,38 +83,48 @@ class _ShowGraphState extends State<ShowGraph> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: PredictionGraph(dayOfWeek: dayNum),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10),
-              child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF48CAE4),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text('Average Number of people visiting today',
-                              style: TextStyle(fontSize: 15)),
-                          Spacer(),
-                          Text(avg.length > 0 ? avg : '...')
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Total Revenue ',
-                              style: TextStyle(fontSize: 15)),
-                          Spacer(),
-                          Text(tot.toString()+' Rs'),
-                        ],
-                      ),
-                    ],
-                  )),
+            FutureBuilder(
+              future: GetNumberOfPeople().fetchCrowdNumber("Agra", dayNum),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return Text('eroor');
+                } else if (snapshot.hasData) {
+                  print(snapshot.data);
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 10.0, right: 10),
+                    child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xFF48CAE4),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text('Average Number of people visiting today',
+                                    style: TextStyle(fontSize: 15)),
+                                Spacer(),
+                                Text(snapshot.data, style:TextStyle(fontSize:15))
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text('Total Revenue ',
+                                    style: TextStyle(fontSize: 15)),
+                                Spacer(),
+                                Text(tot.toString() + ' Rs',style:TextStyle(fontSize:15)),
+                              ],
+                            ),
+                          ],
+                        )),
+                  );
+                }
+                return SpinKitFadingCube(
+                  color: Color(0xFF48CAE4),
+                  size: 50.0,
+                );
+              },
             ),
           ],
         ),

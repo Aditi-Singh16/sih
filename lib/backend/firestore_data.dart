@@ -1,39 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sih/backend/models/monument.dart';
 import 'package:sih/backend/models/ticketChecker.dart';
+import 'package:sih/prefs/sharedPrefs.dart';
 
 class FirestoreData {
-  Future<Monument?> getMonument() async {
-    var result = await FirebaseFirestore.instance
+  Future<Monument?> getMonument(String operatorID) async {
+    Map<String, dynamic> monDet = {};
+    var getid = await FirebaseFirestore.instance
         .collection("monument_details")
-        .doc("64yuabipz6bGugJwuNXv")
+        .where("operatorID", isEqualTo: operatorID)
         .get();
-    print(result.data()!['desc']);
-    print(result.id);
+    getid.docs.forEach((val) {
+      monDet = val.data()!;
+    });
     return Monument(
-        id: result.id,
-        desc: result.data()!['desc'],
-        gallery: result.data()!['gallery'],
-        mainPic: result.data()!['mainPic'],
-        monumentName: result.data()!['monumentName'],
-        category: result.data()!['category'],
-        city: result.data()!['city'],
-        end: result.data()!['end'],
-        state: result.data()!['state'],
-        start: result.data()!['start'],
-        foreigner: result.data()!['foreigner'],
+        id: monDet['monumentID'],
+        desc: monDet['desc'],
+        gallery: monDet['gallery'],
+        mainPic: monDet['mainPic'],
+        monumentName: monDet['monumentName'],
+        category: monDet['category'],
+        city: monDet['city'],
+        end: monDet['end'],
+        state: monDet['state'],
+        start: monDet['start'],
+        foreigner: monDet['foreigner'].toString(),
         indian: {
-          "adult": result.data()!['indian']['adult'],
-          "kid": result.data()!['indian']['kid']
+          "adult": monDet['indian']['adult'],
+          "kid": monDet['indian']['kid']
         },
-        lat: result.data()!['lat'],
-        long: result.data()!['long'],
-        operatorID: result.data()!['operatorID'],
-        rating: result.data()!['rating']);
+        lat: monDet['lat'],
+        long: monDet['long'],
+        operatorID: monDet['operatorID'],
+        rating: monDet['rating']);
   }
 
   Future addOrUpdateMonument(Monument monument) async {
-    var docId = FirebaseFirestore.instance.collection("feedback").doc();
+    var docId = FirebaseFirestore.instance.collection("monument_details").doc();
     await FirebaseFirestore.instance
         .collection("monument_details")
         .doc(docId.id)
@@ -87,5 +90,22 @@ class FirestoreData {
     });
     print(total);
     return total;
+  }
+
+  Future setMonumentDetails(String phone, String type) async {
+    HelperFunctions _helperFunctions = HelperFunctions();
+    FirebaseFirestore.instance
+        .collection("check_type")
+        .where("type", isEqualTo: type)
+        .where("phone", isEqualTo: phone)
+        .get()
+        .then((value) {
+      value.docs.forEach((result) async {
+        print(result.data()!['monument_name']);
+        print(result.data()!['monumentID']);
+        _helperFunctions.setMonNamePref(result.data()!['monument_name']);
+        _helperFunctions.setMonumentIdPref(result.data()!['monumentID']);
+      });
+    });
   }
 }
