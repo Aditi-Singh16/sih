@@ -26,7 +26,6 @@ void main() async {
       "operatorHome": (context) => OperatorHome(),
       "editMonument": (context) => const EditMonument(),
       "addTicketChecker": (context) => AddTicketChecker(),
-      "show_graphs": (context) => ShowGraph(day: 1),
     },
     home: Wrapper(),
   ));

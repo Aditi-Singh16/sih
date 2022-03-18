@@ -73,8 +73,11 @@ class _ShowGraphState extends State<ShowGraph> {
                           onPressed: () async {
                             setState(() {
                               dayNum = index;
-                              Navigator.pushReplacementNamed(
-                                  context, 'show_graphs');
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => ShowGraph(day: index),
+                                ),
+                              );
                             });
                           },
                           style: ElevatedButton.styleFrom(
