@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sih/ui/ticket_checker/account.dart';
 import 'package:sih/ui/ticket_checker/home.dart';
+import 'package:sih/ui/user/acc.dart';
 
 class TicketBottomNavBar extends StatefulWidget {
   const TicketBottomNavBar({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class _TicketBottomNavBarState extends State<TicketBottomNavBar> {
 
   final pages = [
     TicketCheckerHome(),
-    AccountTicket()
+    UserAccount()
   ];
 
   @override

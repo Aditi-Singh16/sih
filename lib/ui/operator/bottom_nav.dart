@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sih/ui/operator/add_ticket_checker.dart';
 import 'package:sih/ui/operator/home.dart';
 import 'package:sih/ui/operator/show_graphs.dart';
-import 'package:sih/ui/user/user_account.dart';
+import 'package:sih/ui/user/acc.dart';
 
 class OperatorBottomNavBar extends StatefulWidget {
   const OperatorBottomNavBar({Key? key}) : super(key: key);

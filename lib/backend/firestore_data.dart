@@ -113,4 +113,27 @@ class FirestoreData {
       });
     });
   }
+
+  Future<Map<String, dynamic>> getTicketDetails(String ticketId) async {
+    print("jkdskjfdgg");
+    Map<String, dynamic> ticketDet = {};
+    var getticket = await FirebaseFirestore.instance
+        .collection("tickets_booked")
+        .where("uid", isEqualTo: ticketId)
+        .get();
+    getticket.docs.forEach((val) {
+      ticketDet = val.data()!;
+    });
+    return ticketDet;
+  }
+
+  Future grantAccess(String id)async {
+    await FirebaseFirestore.instance
+        .collection("tickets_booked")
+        .doc(id)
+        .update({"disable": true}).then((_) {
+      print("success!");
+    });
+
+  }
 }

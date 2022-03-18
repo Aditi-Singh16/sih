@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sih/ui/user/user_account.dart';
+import 'package:sih/ui/user/acc.dart';
 import 'package:sih/ui/user/home.dart';
 import 'package:sih/ui/user/booking_history.dart';
 
