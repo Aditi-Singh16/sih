@@ -165,6 +165,8 @@ class _BookTicketsState extends State<BookTickets> {
                     child: Text(
                       'Select Date and Time',
                       style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'salsa',
                         fontSize: 25.0,
                         color: Color(0xff48CAE4)
                       ),
@@ -242,7 +244,7 @@ class _BookTicketsState extends State<BookTickets> {
                       'Select Number of adult and child',
                       style: TextStyle(
                         fontSize: 18.0,
-                        color:Color(0xff48CAE4)
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -319,7 +321,7 @@ class _BookTicketsState extends State<BookTickets> {
                     ],
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.white),
+                    style: ElevatedButton.styleFrom(primary: Color(0xff48CAE4)),
                     onPressed: () {
                       setState(() {
                         showaddmembers = true;
@@ -583,7 +585,7 @@ class _BookTicketsState extends State<BookTickets> {
                           width: MediaQuery.of(context).size.width * 0.4,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.blueGrey[900],
+                            color: Color(0xff48CAE4),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black26,
@@ -611,8 +613,8 @@ class _BookTicketsState extends State<BookTickets> {
                       : Visibility(visible: false, child: Text("HELLO")),
                   showaddmembers
                       ? ElevatedButton(
-                          style:
-                              ElevatedButton.styleFrom(primary: Colors.white),
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xff48CAE4)),
                           onPressed: () async {
                             await openCheckout();
                             List lst = [];
