@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+
 // import 'package:toast/toast.dart';
 
 class BookTickets extends StatefulWidget {
@@ -14,7 +15,8 @@ class BookTickets extends StatefulWidget {
       required this.city,
       required this.state,
       required this.mainPic,
-      required this.operatorID})
+      required this.operatorID,
+      required this.foreigner})
       : super(key: key);
 
   @override
@@ -27,16 +29,20 @@ class BookTickets extends StatefulWidget {
   final String state;
   final String mainPic;
   final String operatorID;
+  final int foreigner;
 }
 
 class _BookTicketsState extends State<BookTickets> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   var total = 0;
+  late String nationality;
   DateTime selectedDate = DateTime.now();
   TextEditingController _date = TextEditingController();
   TextEditingController _adult = TextEditingController();
   TextEditingController _child = TextEditingController();
   TextEditingController _amount = TextEditingController();
+  TextEditingController _nationality = TextEditingController();
+  TextEditingController _gender = TextEditingController();
 
   bool showaddmembers = false;
   String time = "";
@@ -52,6 +58,7 @@ class _BookTicketsState extends State<BookTickets> {
     DropdownMenuItem(child: Text("4 PM"), value: "4 PM"),
   ];
   List<DropdownMenuItem<String>> adultItems = [
+    DropdownMenuItem(child: Text("0"), value: "0"),
     DropdownMenuItem(child: Text("1"), value: "1"),
     DropdownMenuItem(child: Text("2"), value: "2"),
     DropdownMenuItem(child: Text("3"), value: "3"),
@@ -64,6 +71,7 @@ class _BookTicketsState extends State<BookTickets> {
     DropdownMenuItem(child: Text("10"), value: "10"),
   ];
   List<DropdownMenuItem<String>> childItems = [
+    DropdownMenuItem(child: Text("0"), value: "0"),
     DropdownMenuItem(child: Text("1"), value: "1"),
     DropdownMenuItem(child: Text("2"), value: "2"),
     DropdownMenuItem(child: Text("3"), value: "3"),
@@ -75,6 +83,14 @@ class _BookTicketsState extends State<BookTickets> {
     DropdownMenuItem(child: Text("9"), value: "9"),
     DropdownMenuItem(child: Text("10"), value: "10"),
   ];
+  List<DropdownMenuItem<String>> nationalityItems = [
+    DropdownMenuItem(child: Text("Indian"), value: "Indian"),
+    DropdownMenuItem(child: Text("Foreigner"), value: "Foreigner"),
+  ];
+  List<DropdownMenuItem<String>> genderItems = [
+    DropdownMenuItem(child: Text("Female"), value: "Female"),
+    DropdownMenuItem(child: Text("Male"), value: "Male"),
+  ];
   List<List<Map>> members = [
     [
       {"name": "", "age": "age", "nationality": "", "gender": ""}
@@ -84,12 +100,26 @@ class _BookTicketsState extends State<BookTickets> {
   @override
   void initState() {
     super.initState();
+    fetchinfo();
     _date.text =
         "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
 
     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlerPaymentSuccess);
     razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
     razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
+  }
+
+  void fetchinfo() async {
+    var collection = db.collection('users');
+    //var querySnapshot = await collection.get();
+    var docSnapshot = await collection.doc(widget.uid).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+
+      setState(() {
+        nationality = data['nationality'];
+      });
+    }
   }
 
   void handlerPaymentSuccess() {
@@ -117,8 +147,7 @@ class _BookTicketsState extends State<BookTickets> {
       "key": "rzp_test_Ienn2nz5hJfAS1",
       "amount": num.parse(_amount.text) * 100,
       "name": "Sample App",
-      "description": "Payment for the some random product",
-      "prefill": {"contact": "2323232323"},
+      "description": "Payment for the ticket",
       "external": {
         "wallets": ["paytm"]
       }
@@ -134,19 +163,19 @@ class _BookTicketsState extends State<BookTickets> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-              'Book Ticket',
+          title: RichText(
+            text: TextSpan(
+              text: 'BOOK TICKET',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20.0,
                 letterSpacing: 0.0,
               ),
             ),
+          ),
           elevation: 1.0,
           leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+            onPressed: () {},
             icon: Icon(
               Icons.arrow_back,
               color: Colors.white,
@@ -156,6 +185,7 @@ class _BookTicketsState extends State<BookTickets> {
         body: Container(
             height: MediaQuery.of(context).size.height * 1,
             width: MediaQuery.of(context).size.width * 1,
+            color: Colors.blue[100],
             child: SingleChildScrollView(
               physics: ScrollPhysics(),
               child: Column(
@@ -165,9 +195,9 @@ class _BookTicketsState extends State<BookTickets> {
                     child: Text(
                       'Select Date and Time',
                       style: TextStyle(
+                        color: Colors.black,
                         fontFamily: 'salsa',
                         fontSize: 25.0,
-                        color: Color(0xff48CAE4)
                       ),
                     ),
                   ),
@@ -176,7 +206,7 @@ class _BookTicketsState extends State<BookTickets> {
                     padding: EdgeInsets.all(17.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color: Color(0xff48CAE4),
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
@@ -192,7 +222,7 @@ class _BookTicketsState extends State<BookTickets> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Icon(Icons.calendar_today, color: Colors.white),
+                        Icon(Icons.calendar_today, color: Colors.black),
                         ElevatedButton(
                           style:
                               ElevatedButton.styleFrom(primary: Colors.white),
@@ -204,7 +234,7 @@ class _BookTicketsState extends State<BookTickets> {
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
-                        Text(_date.text, style: TextStyle(color: Colors.white)),
+                        Text(_date.text, style: TextStyle(color: Colors.black)),
                       ],
                     ),
                   ),
@@ -213,7 +243,7 @@ class _BookTicketsState extends State<BookTickets> {
                     padding: EdgeInsets.all(17.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color: Color(0xff48CAE4),
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
@@ -229,11 +259,11 @@ class _BookTicketsState extends State<BookTickets> {
                     child: Row(
                       children: <Widget>[
                         SizedBox(width: 40.0),
-                        Icon(Icons.account_balance, color: Colors.white),
+                        Icon(Icons.account_balance, color: Colors.black),
                         SizedBox(width: 25.0),
                         Text(widget.monumentName,
                             style:
-                                TextStyle(color: Colors.white, fontSize: 15.0)),
+                                TextStyle(color: Colors.black, fontSize: 15.0)),
                       ],
                     ),
                   ),
@@ -255,7 +285,7 @@ class _BookTicketsState extends State<BookTickets> {
                         width: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
-                          color: Color(0xff48CAE4),
+                          color: Colors.white,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black26,
@@ -279,7 +309,7 @@ class _BookTicketsState extends State<BookTickets> {
                             validator: (String? newValue) =>
                                 newValue == null ? 'Adult' : null,
                             hint: Text('Adult',
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.black)),
                             // value: _division.text,
                             items: adultItems),
                       ),
@@ -289,7 +319,7 @@ class _BookTicketsState extends State<BookTickets> {
                         width: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
-                          color: Color(0xff48CAE4),
+                          color: Colors.white,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black26,
@@ -313,7 +343,7 @@ class _BookTicketsState extends State<BookTickets> {
                             validator: (String? newValue) =>
                                 newValue == null ? 'Child' : null,
                             hint: Text('Child',
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.black)),
                             // value: _division.text,
                             items: childItems),
                       ),
@@ -324,11 +354,20 @@ class _BookTicketsState extends State<BookTickets> {
                     onPressed: () {
                       setState(() {
                         showaddmembers = true;
+                        var totakdisplayamount;
                         total = int.parse(_adult.text) + int.parse(_child.text);
-                        var totakdisplayamount =
-                            int.parse(_adult.text) * widget.amountperadult +
-                                int.parse(_child.text) * widget.amountperchild;
-                        _amount.text = totakdisplayamount.toString();
+                        print(nationality);
+                        var resullt = nationality.compareTo("Indian");
+                        if (resullt == 0) {
+                          totakdisplayamount = int.parse(_adult.text) *
+                                  widget.amountperadult +
+                              int.parse(_child.text) * widget.amountperchild;
+                          _amount.text = totakdisplayamount.toString();
+                        } else {
+                          totakdisplayamount = total * widget.foreigner;
+                          _amount.text = totakdisplayamount.toString();
+                        }
+
                         for (int i = 1; i <= total; i++) {
                           itemsL.add(ItemLists(
                               id: i,
@@ -341,7 +380,7 @@ class _BookTicketsState extends State<BookTickets> {
                     },
                     child: Text(
                       "Add member Details",
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   showaddmembers
@@ -382,7 +421,7 @@ class _BookTicketsState extends State<BookTickets> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
-                                              color: Colors.blueGrey[900],
+                                              color: Colors.white,
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: Colors.black26,
@@ -423,7 +462,7 @@ class _BookTicketsState extends State<BookTickets> {
                                                             borderSide:
                                                                 BorderSide(
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           focusedBorder:
                                                               OutlineInputBorder(
@@ -431,12 +470,12 @@ class _BookTicketsState extends State<BookTickets> {
                                                                 BorderSide(
                                                                     width: 1,
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           labelText: 'Name',
                                                           labelStyle: TextStyle(
                                                               color:
-                                                                  Colors.white),
+                                                                  Colors.black),
                                                         ),
                                                       ),
                                                     ),
@@ -461,7 +500,7 @@ class _BookTicketsState extends State<BookTickets> {
                                                             borderSide:
                                                                 BorderSide(
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           focusedBorder:
                                                               OutlineInputBorder(
@@ -469,12 +508,12 @@ class _BookTicketsState extends State<BookTickets> {
                                                                 BorderSide(
                                                                     width: 1,
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           labelText: 'Age',
                                                           labelStyle: TextStyle(
                                                               color:
-                                                                  Colors.white),
+                                                                  Colors.black),
                                                         ),
                                                       ),
                                                     ),
@@ -507,7 +546,7 @@ class _BookTicketsState extends State<BookTickets> {
                                                             borderSide:
                                                                 BorderSide(
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           focusedBorder:
                                                               OutlineInputBorder(
@@ -515,13 +554,13 @@ class _BookTicketsState extends State<BookTickets> {
                                                                 BorderSide(
                                                                     width: 1,
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           labelText:
                                                               'Nationality',
                                                           labelStyle: TextStyle(
                                                               color:
-                                                                  Colors.white),
+                                                                  Colors.black),
                                                         ),
                                                       ),
                                                     ),
@@ -547,7 +586,7 @@ class _BookTicketsState extends State<BookTickets> {
                                                             borderSide:
                                                                 BorderSide(
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           focusedBorder:
                                                               OutlineInputBorder(
@@ -555,12 +594,12 @@ class _BookTicketsState extends State<BookTickets> {
                                                                 BorderSide(
                                                                     width: 1,
                                                                     color: Colors
-                                                                        .white),
+                                                                        .black),
                                                           ),
                                                           labelText: 'Gender',
                                                           labelStyle: TextStyle(
                                                               color:
-                                                                  Colors.white),
+                                                                  Colors.black),
                                                         ),
                                                       ),
                                                     ),
@@ -653,23 +692,10 @@ class _BookTicketsState extends State<BookTickets> {
                           },
                           child: Text(
                             "Book Ticket",
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.white),
                           ),
                         )
                       : Visibility(visible: false, child: Text("Book Ticket")),
-                  showaddmembers
-                      ? ElevatedButton(
-                          style:
-                              ElevatedButton.styleFrom(primary: Colors.white),
-                          onPressed: () async {
-                            await openCheckout();
-                          },
-                          child: Text(
-                            "Pay",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        )
-                      : Visibility(visible: false, child: Text("Pay")),
                 ],
               ),
             )));

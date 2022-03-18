@@ -157,6 +157,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>BookTickets(
+                                foreigner: widget.detail['foreigner'],
                                 monumentName: widget.detail['monumentName'], 
                                 uid: id,  
                                 amountperadult: widget.detail['indian']['adult'], 
