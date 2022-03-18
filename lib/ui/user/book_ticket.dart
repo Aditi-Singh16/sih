@@ -165,7 +165,6 @@ class _BookTicketsState extends State<BookTickets> {
                     child: Text(
                       'Select Date and Time',
                       style: TextStyle(
-                        color: Colors.black,
                         fontFamily: 'salsa',
                         fontSize: 25.0,
                         color: Color(0xff48CAE4)
