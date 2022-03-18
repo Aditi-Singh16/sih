@@ -1,7 +1,9 @@
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
+import 'package:sih/ui/operator/edit_monument.dart';
 
 class OperatorHome extends StatefulWidget {
   @override
@@ -13,9 +15,9 @@ class _OperatorHomeState extends State<OperatorHome> {
   getInfo() async {
     HelperFunctions _helperFunctions = HelperFunctions();
     uid = await _helperFunctions.readUserIdPref();
-    setState(() {
-      
-    });
+    print("uid is");
+    print(uid);
+    setState(() {});
   }
 
   @override
@@ -26,31 +28,65 @@ class _OperatorHomeState extends State<OperatorHome> {
 
   @override
   Widget build(BuildContext context) {
-    double fontSize = MediaQuery.of(context).size.width * 0.04;
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Monument detail'),
-        ),
-        body: FutureBuilder(
-          future: FirebaseFirestore.instance
-              .collection('monument_details')
-              .where('operatorID', isEqualTo: uid)
-              .get(),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.hasError) {
-              return const Text("error");
-            } else if (snapshot.hasData) {
-              final specificDocument = snapshot.data.docs;
-              print(specificDocument);
-              return ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: specificDocument.length,
-                itemBuilder: (context, snap) {
-                  return Column(
+      appBar: AppBar(title: const Text('Monument')),
+      body: FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('monument_details')
+            .where('operatorID', isEqualTo: uid)
+            .get(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return const Text("error");
+          } else if (snapshot.hasData) {
+            print("eheh");
+            print(snapshot.data.toString());
+            print(uid);
+            final specificDocument = snapshot.data.docs;
+            print(specificDocument);
+            return ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: specificDocument.length,
+              itemBuilder: (context, snap) {
+                return Column(
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, left: 10.0, right: 10, bottom: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              snapshot.data.docs[snap]['monumentName'],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xff48CAE4),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25),
+                            ),
+                            CircleAvatar(
+                              backgroundColor: Color(0xff48CAE4),
+                              child: IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditMonument()));
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ),
+    
                       Padding(
                         padding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).size.height / 100),
@@ -58,8 +94,7 @@ class _OperatorHomeState extends State<OperatorHome> {
                           elevation: 5,
                           color: Colors.white,
                           shape: RoundedRectangleBorder(
-                              side:
-                                  BorderSide(color: Colors.blueGrey.shade900),
+                              side: BorderSide(color: Colors.blueGrey.shade900),
                               borderRadius: BorderRadius.circular(20)),
                           child: Container(
                             margin: EdgeInsets.all(
@@ -71,8 +106,7 @@ class _OperatorHomeState extends State<OperatorHome> {
                                 boxFit: BoxFit.cover,
                                 autoplay: true,
                                 animationCurve: Curves.fastOutSlowIn,
-                                animationDuration:
-                                    Duration(milliseconds: 600),
+                                animationDuration: Duration(milliseconds: 600),
                                 dotSize: 6.0,
                                 dotIncreasedColor: Color(0xff48CAE4),
                                 dotBgColor: Colors.transparent,
@@ -98,18 +132,9 @@ class _OperatorHomeState extends State<OperatorHome> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: height * 0.005,
-                      ),
+    
                       //monument name
-                      Text(
-                        snapshot.data.docs[snap]['monumentName'],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color(0xff48CAE4),
-                            fontWeight: FontWeight.bold, fontSize: 25),
-                      ),
-
+    
                       SizedBox(
                         height: height * 0.009,
                       ),
@@ -141,12 +166,21 @@ class _OperatorHomeState extends State<OperatorHome> {
                       ),
                     ],
                   );
-                },
-              );
-            } else {
-              return const Text("loading");
-            }
-          },
-        ));
+              },
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: SpinKitFadingCube(
+                  color: Color(0xFF48CAE4),
+                  size: 50.0,
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 }

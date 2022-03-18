@@ -26,7 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Future signUpUser(String phone, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
-    _auth.verifyPhoneNumber(
+    await _auth.verifyPhoneNumber(
         phoneNumber: phone,
         timeout: Duration(seconds: 120),
         verificationCompleted: (AuthCredential credential) async {
@@ -37,7 +37,6 @@ class _SignUpPageState extends State<SignUpPage> {
           User? user = result.user;
 
           if (user != null) {
-            _helperFunctions.setUserIdPref(user.uid);
             _helperFunctions.setUserPhoneNoPref(phone);
             if (dropdownvalue == 'User') {
               _helperFunctions.setUserType('user');
@@ -117,11 +116,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         User? user = result.user;
 
                         if (user != null) {
-                          _helperFunctions.setUserIdPref(user.uid);
                           _helperFunctions.setUserPhoneNoPref(phone);
                           if (dropdownvalue == 'User') {
                             _helperFunctions.setUserType('user');
-                            Navigator.pushReplacement(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ProfilePage(
@@ -137,7 +135,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             if (result.docs.isNotEmpty) {
                               _helperFunctions.setUserType('ticket_checker');
                             } else {
-                              Navigator.pushReplacement(
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SignUpPage()));
@@ -152,13 +150,13 @@ class _SignUpPageState extends State<SignUpPage> {
                             if (result.docs.isNotEmpty) {
                               _helperFunctions.setUserType('operator');
                             } else {
-                              Navigator.pushReplacement(
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SignUpPage()));
                             }
                           }
-                          Navigator.pushReplacement(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ProfilePage(user: user)));

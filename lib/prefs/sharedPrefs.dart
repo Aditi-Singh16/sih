@@ -5,7 +5,8 @@ class HelperFunctions {
   final userNameKey = 'this_user_fName';
   final phoneNumberKey = 'this_user_phone';
   final userTypeKey = 'this_user_type';
-  final AvgPeople = 'this_avg_ppl';
+  final monumentIdKey = 'this_mon_id';
+  final monumentNameKey = 'this_monName_key';
 
   Future<void> setUserIdPref(String? id) async {
     final prefs = await SharedPreferences.getInstance();
@@ -23,6 +24,15 @@ class HelperFunctions {
       prefs.setString(userNameKey, '');
     }
     prefs.setString(userNameKey, userName!);
+  }
+
+  Future<void> setMonNamePref(String? monName) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (monName == null) {
+      prefs.setString(monumentNameKey, '');
+    }
+    prefs.setString(monumentNameKey, monName!);
   }
 
   Future<void> setUserPhoneNoPref(String? phone) async {
@@ -43,18 +53,23 @@ class HelperFunctions {
     prefs.setString(userTypeKey, userType!);
   }
 
-  Future<void> setAvgPeople(String? avgcount) async {
+  Future<void> setMonumentIdPref(String? monid) async {
     final prefs = await SharedPreferences.getInstance();
 
-    if (avgcount == null) {
-      prefs.setString(AvgPeople, '');
+    if (monid == null) {
+      prefs.setString(monumentIdKey, '0');
     }
-    prefs.setString(AvgPeople, avgcount!);
+    prefs.setString(monumentIdKey, monid!);
   }
 
   Future<String> readUserIdPref() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('this_user_id') ?? '0';
+  }
+
+  Future<String> readMonumentIdPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('this_mon_id') ?? '0';
   }
 
   Future<String> readUserPhonePref() async {
@@ -67,9 +82,9 @@ class HelperFunctions {
     return prefs.getString('this_user_fName') ?? '';
   }
 
-  Future<String> readAvgPeoplePref() async {
+  Future<String> readMonumentNamePref() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('this_avg_ppl') ?? '';
+    return prefs.getString('this_monName_key') ?? '';
   }
 
   readUserTypePref() async {

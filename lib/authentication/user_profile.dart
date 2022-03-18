@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sih/backend/firestore_data.dart';
 import 'package:sih/backend/local_data.dart';
 import 'package:sih/backend/models/user.dart';
 import 'package:sih/prefs/sharedPrefs.dart';
@@ -44,6 +45,8 @@ class _ProfilePageState extends State<ProfilePage> {
         .doc(widget.user.uid)
         .set(insertMyUser.toMap());
     HelperFunctions().setUserNamePref(name);
+    await FirestoreData().setMonumentDetails(
+        widget.user.phoneNumber!, dropdownvalue.toLowerCase());
   }
 
   @override
@@ -178,24 +181,27 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
+                      HelperFunctions().setUserIdPref(widget.user.uid);
                       final name = _nameController.text.trim();
                       final nation = _nameController.text.trim();
                       addUser(name, nation).then((value) => {
                             if (dropdownvalue == 'Operator')
                               {
-                                Navigator.push(
+                                Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            OperatorBottomNavBar()))
+                                            OperatorBottomNavBar()),
+                                    (Route<dynamic> route) => false)
                               }
                             else if (dropdownvalue == 'User')
                               {
-                                Navigator.push(
+                                Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            UserBottomNavBar()))
+                                            UserBottomNavBar()),
+                                    (Route<dynamic> route) => false)
                               }
                             else if (dropdownvalue == 'Ticket_Checker')
                               {
