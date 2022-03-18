@@ -52,6 +52,7 @@ class _BookTicketsState extends State<BookTickets> {
     DropdownMenuItem(child: Text("4 PM"), value: "4 PM"),
   ];
   List<DropdownMenuItem<String>> adultItems = [
+    DropdownMenuItem(child: Text("0"), value: "0"),
     DropdownMenuItem(child: Text("1"), value: "1"),
     DropdownMenuItem(child: Text("2"), value: "2"),
     DropdownMenuItem(child: Text("3"), value: "3"),
@@ -64,6 +65,7 @@ class _BookTicketsState extends State<BookTickets> {
     DropdownMenuItem(child: Text("10"), value: "10"),
   ];
   List<DropdownMenuItem<String>> childItems = [
+    DropdownMenuItem(child: Text("0"), value: "0"),
     DropdownMenuItem(child: Text("1"), value: "1"),
     DropdownMenuItem(child: Text("2"), value: "2"),
     DropdownMenuItem(child: Text("3"), value: "3"),
@@ -195,7 +197,7 @@ class _BookTicketsState extends State<BookTickets> {
                         Icon(Icons.calendar_today, color: Colors.black),
                         ElevatedButton(
                           style:
-                              ElevatedButton.styleFrom(primary: Colors.black),
+                              ElevatedButton.styleFrom(primary: Colors.white),
                           onPressed: () {
                             _selectDate(context);
                           },
@@ -381,7 +383,7 @@ class _BookTicketsState extends State<BookTickets> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
-                                              color: Colors.grey[600],
+                                              color: Colors.white,
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: Colors.black26,
