@@ -1,9 +1,19 @@
 # :sparkle: TicketFolio
 An Application To manage crowd at various tourist spots in India.
 
+## :sparkles: Benefits & Features
+1. The discomfort of standing in long queues will be completely eliminated by the 24/7 available booking portal.
+2. This will encourage not only the Heritage and culture of India but also tourism.
+3. This will be paperless and hence will be environmentally friendly.
+4. The recommendations will be really helpful for new visitors to plan their day efficiently.
+5. The monument operators will be able to make better business decisions based on the type of crowd visiting and thus, enhancing the revenue generated.
+6. Signup using Mobile Number by generating OTP.
+7. Search for monuments category-wise.
+8. Fares will be dependent on nationality specified
+
+
+
 ## :monocle_face: About TicketFolio
-
-
 
 https://user-images.githubusercontent.com/74586135/209519385-149e40fa-cc44-452f-a1ac-1f3a304476c7.mp4
 
