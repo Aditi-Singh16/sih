@@ -1,39 +1,28 @@
-# sih
+# :sparkle: TicketFolio
+An Application To manage crowd at various tourist spots in India.
 
-A new Flutter project.
-
-## Getting Started
-To add ur assigned part follow these steps
+## :monocle_face: About TicketFolio
 
 
-**1.** Create a new branch.
 
-```
-git checkout -b <your_branch_name>
-```
-
-**2.** Perform your desired changes to the code base.
-
-<p align="center"><img width=35% src="https://media2.giphy.com/media/L1R1tvI9svkIWwpVYr/giphy.gif?cid=ecf05e47pzi2rpig0vc8pjusra8hiai1b91zgiywvbubu9vu&rid=giphy.gif"></p>
-
-**3.** Track your changes:heavy_check_mark: .
-
-```
-git add . 
-```
-
-**4.** Commit your changes .
-
-```
-git commit -m "Relevant message"
-```
-
-**5.** Push the committed changes in your feature branch.
-
-```
-git push -u origin <your_branch_name>
-```
+https://user-images.githubusercontent.com/74586135/209519385-149e40fa-cc44-452f-a1ac-1f3a304476c7.mp4
 
 
-**6.** Create a PR.
-click on `compare and pull requests` then compare with master branch and create a pull request.
+## :iphone: Application
+
+### TechStack 
+|   Framework/language   | Task | 
+| :------------- | :------------- | 
+| Flutter         | Mobile Application development      |
+| Firebase          | Real-time Cloud Database     |
+| Supervised ML | Crowd prediction on a particular day |
+
+
+### App Preview
+| User module | Admin module | Ticket Checker Module |
+| :-------------: | :-------------: | :-------------: | 
+| <video src="https://user-images.githubusercontent.com/74586135/209518268-a0a7dd51-7b94-47fe-8260-11afd8f2f07d.mp4" > | <video src="https://user-images.githubusercontent.com/74586135/209518358-662e4656-a4e2-4b95-bbd7-3df9b241135b.mp4"> | <video src="https://user-images.githubusercontent.com/74586135/209518437-347f6c24-7d2f-497b-b5aa-aaa0e71e6e1e.mp4"> |
+
+
+
+
